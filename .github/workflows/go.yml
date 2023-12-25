@@ -7,7 +7,6 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +26,7 @@ jobs:
     - name: Benchmark
       run: | 
         echo "Benchmark Expression Evaluation libraries"
-        cd  expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+        cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
         echo "Benchmark In-Memory Cache libraries"
-        cd  in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+        cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
 
