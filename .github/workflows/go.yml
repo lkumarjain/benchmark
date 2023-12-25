@@ -19,10 +19,15 @@ jobs:
         go-version: '1.20'
 
     - name: Dependencies
-      run: go mod tidy
-      run: go mod vendor
+      run: | 
+        echo "Download Dependencies"
+        go mod tidy
+        go mod vendor
 
-    - name: Test
-      run: cd  expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
-      run: cd  in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+    - name: Benchmark
+      run: | 
+        echo "Benchmark Expression Evaluation libraries"
+        cd  expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+        echo "Benchmark In-Memory Cache libraries"
+        cd  in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
 
