@@ -18,8 +18,13 @@ jobs:
       with:
         go-version: '1.20'
 
-    - name: Build
-      run: go build -v ./...
+    - name: Dependencies
+      run: 
+        - go mod tidy
+        - go mod vendor
 
     - name: Test
-      run: go test -v ./...
+      run: 
+        - cd  expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+        - cd  in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+        
