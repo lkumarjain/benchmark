@@ -1,4 +1,4 @@
-name: Go
+name: Benchmark Golang Libraries
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  Benchmark-Expression-Evaluation:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -27,6 +27,25 @@ jobs:
       run: | 
         echo "Benchmark Expression Evaluation libraries"
         cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+  
+  Benchmark-In-Memory-Cache:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Dependencies
+      run: | 
+        echo "Download Dependencies"
+        go mod tidy
+        go mod vendor
+
+    - name: Benchmark
+      run: | 
         echo "Benchmark In-Memory Cache libraries"
         cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
 
