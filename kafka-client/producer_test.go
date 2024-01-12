@@ -3,9 +3,9 @@ package kafkaclients
 import (
 	"testing"
 
-	"github.com/lkumarjain/benchmark/kafka-clients/confluent"
-	"github.com/lkumarjain/benchmark/kafka-clients/sarama"
-	"github.com/lkumarjain/benchmark/kafka-clients/segmentio"
+	"github.com/lkumarjain/benchmark/kafka-client/confluent"
+	"github.com/lkumarjain/benchmark/kafka-client/sarama"
+	"github.com/lkumarjain/benchmark/kafka-client/segmentio"
 )
 
 func BenchmarkProducer(b *testing.B) {
