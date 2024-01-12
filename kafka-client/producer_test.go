@@ -67,6 +67,17 @@ func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func
 		for i := 0; i < b.N; i++ {
 			producer.Produce(generateKey(prefix, i), valueGenerator(i))
 		}
+
+		b.StopTimer()
+	})
+
+	b.Run(testName(prefix, "Segmentio@ProduceChannel"), func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			producer.ProduceChannel(generateKey(prefix, i), valueGenerator(i))
+		}
+
+		producer.Wait()
 		b.StopTimer()
 	})
 }
