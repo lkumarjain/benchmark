@@ -28,7 +28,6 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 		for i := 0; i < b.N; i++ {
 			producer.Produce(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
-		producer.Wait()
 		b.StopTimer()
 	})
 

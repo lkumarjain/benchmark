@@ -26,21 +26,23 @@ func NewProducer(bootstrapServers string) *Producer {
 }
 
 func (p *Producer) Produce(topic string, key string, value string) {
+	deliveryChan := make(chan kafka.Event, 1)
+	p.instance.Produce(&kafka.Message{
+		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+		Key:            []byte(key),
+		Value:          []byte(value),
+	}, deliveryChan)
+
+	<-deliveryChan
+}
+
+func (p *Producer) ProduceChannel(topic string, key string, value string) {
 	p.wg.Add(1)
 	p.instance.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),
 		Value:          []byte(value),
 	}, nil)
-}
-
-func (p *Producer) ProduceChannel(topic string, key string, value string) {
-	p.wg.Add(1)
-	p.instance.ProduceChannel() <- &kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-		Key:            []byte(key),
-		Value:          []byte(value),
-	}
 }
 
 func (p *Producer) DeliveryReport() {

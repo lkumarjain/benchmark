@@ -8,6 +8,12 @@ Benchmarks of kafka client libraries for Golang.
  go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
 ```
 
+## Docker File
+
+```bash
+docker-compose -p kafka -f docker-compose.yml up
+```
+
 ## Results
 
 All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `100K` samples and `5` iterations.
