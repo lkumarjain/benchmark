@@ -1,3 +1,16 @@
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    table, th, td {
+    border: none;
+    }
+    blockquote {
+        border-left: none;
+        padding-left: 10px;
+    }
+</style>
+
 # Kafka Client Benchmarks
 
 Benchmarks of kafka client libraries for Golang.
@@ -16,27 +29,29 @@ docker-compose -p kafka -f docker-compose.yml up
 
 ## Results
 
-All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine by running with `10K` samples and `5` iterations.
+All the [benchmarks](/kafka-client/results) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with a standalone Kafka running in the docker.
 
 ### Producer
 
+All the [benchmarks](/kafka-client/results/producer_results.out) are performed with `10K` samples size and `5` iterations.
+
 #### Microsecond / Operation
 
-| Sync Producer | Async Producer |
-| -------- | ------- |
-|![SyncProducerTime.png](/kafka-client/results/SyncProducerTime.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerTime.png)|
+| Sync Producer                                                       | Async Producer                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![SyncProducerTime.png](/kafka-client/results/SyncProducerTime.png) | ![AsyncProducerTime.png](/kafka-client/results/AsyncProducerTime.png) |
 
 #### Memory Allocation / Operation
 
-| Sync Producer | Async Producer |
-| -------- | ------- |
-|![SyncProducerTime.png](/kafka-client/results/SyncProducerMemoryAllocations.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerMemoryAllocations.png)|
+| Sync Producer                                                                    | Async Producer                                                                     |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| ![SyncProducerTime.png](/kafka-client/results/SyncProducerMemoryAllocations.png) | ![AsyncProducerTime.png](/kafka-client/results/AsyncProducerMemoryAllocations.png) |
 
 #### Bytes / Operation
 
-| Sync Producer | Async Producer |
-| -------- | ------- |
-|![SyncProducerTime.png](/kafka-client/results/SyncProducerBytes.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerBytes.png)|
+| Sync Producer                                                        | Async Producer                                                         |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| ![SyncProducerTime.png](/kafka-client/results/SyncProducerBytes.png) | ![AsyncProducerTime.png](/kafka-client/results/AsyncProducerBytes.png) |
 
 ## Libraries
 
