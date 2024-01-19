@@ -40,11 +40,11 @@ func NewProducer(bootstrapServers string) *Producer {
 	return producer
 }
 
-func (p *Producer) Produce(topic string, key string, value string) {
+func (p *Producer) ProduceSync(topic string, key string, value string) {
 	p.syncInstance.SendMessage(&sarama.ProducerMessage{Topic: topic, Key: sarama.StringEncoder(key), Value: sarama.StringEncoder(value)})
 }
 
-func (p *Producer) ProduceChannel(topic string, key string, value string) {
+func (p *Producer) ProduceAsync(topic string, key string, value string) {
 	p.wg.Add(1)
 	p.asyncInstance.Input() <- &sarama.ProducerMessage{Topic: topic, Key: sarama.StringEncoder(key), Value: sarama.StringEncoder(value)}
 }

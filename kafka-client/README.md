@@ -16,19 +16,27 @@ docker-compose -p kafka -f docker-compose.yml up
 
 ## Results
 
-All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `100K` samples and `5` iterations.
+All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine by running with `10K` samples and `5` iterations.
 
-![Average](/in-memory-cache/results/Average_Cache.png)
+### Producer
 
-### Average ns / operation
+#### Microsecond / Operation
 
-#### Set Function
+| Sync Producer | Async Producer |
+| -------- | ------- |
+|![SyncProducerTime.png](/kafka-client/results/SyncProducerTime.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerTime.png)|
 
-![Average_ns_per_operation_set.png](/in-memory-cache/results/Average_ns_per_operation_set.png)
+#### Memory Allocation / Operation
 
-#### Get & Remove Function
+| Sync Producer | Async Producer |
+| -------- | ------- |
+|![SyncProducerTime.png](/kafka-client/results/SyncProducerMemoryAllocations.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerMemoryAllocations.png)|
 
-![Average_ns_per_operation_get_remove](/in-memory-cache/results/Average_ns_per_operation_get_remove.png)
+#### Bytes / Operation
+
+| Sync Producer | Async Producer |
+| -------- | ------- |
+|![SyncProducerTime.png](/kafka-client/results/SyncProducerBytes.png)|![AsyncProducerTime.png](/kafka-client/results/AsyncProducerBytes.png)|
 
 ## Libraries
 

@@ -44,11 +44,11 @@ func NewProducer(bootstrapServers string, topic string) *Producer {
 	return producer
 }
 
-func (p *Producer) Produce(key string, value string) {
+func (p *Producer) ProduceSync(key string, value string) {
 	p.syncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
 }
 
-func (p *Producer) ProduceChannel(key string, value string) {
+func (p *Producer) ProduceAsync(key string, value string) {
 	p.wg.Add(1)
 	p.asyncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
 }

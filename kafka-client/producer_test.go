@@ -26,7 +26,7 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 	b.Run(testName(prefix, "Confluent@Produce"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.Produce(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 		b.StopTimer()
 	})
@@ -34,7 +34,7 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 	b.Run(testName(prefix, "Confluent@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.ProduceChannel(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceAsync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 		producer.Wait()
 		b.StopTimer()
@@ -47,7 +47,7 @@ func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int
 	b.Run(testName(prefix, "Franz@Produce"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.Produce(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 
 		b.StopTimer()
@@ -56,7 +56,7 @@ func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int
 	b.Run(testName(prefix, "Franz@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.ProduceChannel(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceAsync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 
 		producer.Wait()
@@ -70,7 +70,7 @@ func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int)
 	b.Run(testName(prefix, "Goka@Produce"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.Produce(generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceSync(generateKey(prefix, i), valueGenerator(i))
 		}
 
 		b.StopTimer()
@@ -79,7 +79,7 @@ func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int)
 	b.Run(testName(prefix, "Goka@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.ProduceChannel(generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceAsync(generateKey(prefix, i), valueGenerator(i))
 		}
 
 		producer.Wait()
@@ -93,7 +93,7 @@ func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(in
 	b.Run(testName(prefix, "Sarama@Produce"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.Produce(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 		b.StopTimer()
 	})
@@ -101,7 +101,7 @@ func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(in
 	b.Run(testName(prefix, "Sarama@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.ProduceChannel(topicName, generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceAsync(topicName, generateKey(prefix, i), valueGenerator(i))
 		}
 		producer.Wait()
 		b.StopTimer()
@@ -114,7 +114,7 @@ func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func
 	b.Run(testName(prefix, "Segmentio@Produce"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.Produce(generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceSync(generateKey(prefix, i), valueGenerator(i))
 		}
 
 		b.StopTimer()
@@ -123,7 +123,7 @@ func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func
 	b.Run(testName(prefix, "Segmentio@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			producer.ProduceChannel(generateKey(prefix, i), valueGenerator(i))
+			producer.ProduceAsync(generateKey(prefix, i), valueGenerator(i))
 		}
 
 		producer.Wait()

@@ -26,11 +26,11 @@ func NewProducer(bootstrapServers string) *Producer {
 	return producer
 }
 
-func (p *Producer) Produce(topic string, key string, value string) {
+func (p *Producer) ProduceSync(topic string, key string, value string) {
 	p.instance.ProduceSync(context.Background(), &kgo.Record{Topic: topic, Key: []byte(key), Value: []byte(value)})
 }
 
-func (p *Producer) ProduceChannel(topic string, key string, value string) {
+func (p *Producer) ProduceAsync(topic string, key string, value string) {
 	p.wg.Add(1)
 	p.instance.Produce(context.Background(), &kgo.Record{Topic: topic, Key: []byte(key), Value: []byte(value)}, p.DeliveryReport)
 }
