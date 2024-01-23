@@ -1,16 +1,3 @@
-<style>
-    table {
-        border-collapse: collapse;
-    }
-    table, th, td {
-    border: none;
-    }
-    blockquote {
-        border-left: none;
-        padding-left: 10px;
-    }
-</style>
-
 # Kafka Client Benchmarks
 
 Benchmarks of kafka client libraries for Golang.
@@ -18,7 +5,8 @@ Benchmarks of kafka client libraries for Golang.
 ## Execute Benchmark
 
 ```bash
- go test -timeout=5h -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+go test -timeout=5h -bench=Producer -benchmem -count 5 -benchtime=10000x > results/producer_results.out
+go test -timeout=5h -bench=Consumer -benchmem -count 5 -benchtime=10000x > results/consumer_results.out
 ```
 
 ## Docker File
