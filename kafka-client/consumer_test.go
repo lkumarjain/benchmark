@@ -5,109 +5,94 @@ import (
 
 	"github.com/lkumarjain/benchmark/kafka-client/confluent"
 	"github.com/lkumarjain/benchmark/kafka-client/franz"
+	"github.com/lkumarjain/benchmark/kafka-client/goka"
+	"github.com/lkumarjain/benchmark/kafka-client/sarama"
+	"github.com/lkumarjain/benchmark/kafka-client/segmentio"
 )
 
 func BenchmarkConfluentConsumer(b *testing.B) {
 	consumer := confluent.NewConsumer(bootstrapServers)
+	message := make(chan interface{}, 1)
+	done := make(chan bool, 1)
+	go consumer.Consume(topicName, message, done)
 
 	b.Run("Confluent@Consume", func(b *testing.B) {
-		message := make(chan interface{}, 1)
-		done := make(chan bool, 1)
-		go consumer.Consume(topicName, message, done)
-
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-message
 		}
-
-		done <- true
 		b.StopTimer()
 	})
 
+	done <- true
 	consumer.Close()
+}
+func BenchmarkGokaConsumer(b *testing.B) {
+	consumer := goka.NewConsumer(bootstrapServers, topicName)
+	message := make(chan interface{}, 1)
+	done := make(chan bool, 1)
+	go consumer.Consume(topicName, message, done)
+
+	b.Run("Goka@Consumer", func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			<-message
+		}
+		b.StopTimer()
+	})
+
+	close(done)
 }
 
 func BenchmarkFranzConsumer(b *testing.B) {
 	consumer := franz.NewConsumer(bootstrapServers, topicName)
+	message := make(chan interface{}, 1)
+	done := make(chan bool, 1)
+	go consumer.Consume(message, done)
 
 	b.Run("Franz@Consumer", func(b *testing.B) {
-		message := make(chan interface{}, 1)
-		done := make(chan bool, 1)
-		go consumer.Consume(message, done)
-
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-message
 		}
-
-		done <- true
 		b.StopTimer()
 	})
+
+	done <- true
 }
 
-// func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-// 	producer := goka.NewProducer(bootstrapServers, topicName)
+func BenchmarkSaramaConsumer(b *testing.B) {
+	consumer := sarama.NewConsumer(bootstrapServers)
+	message := make(chan interface{}, 1)
+	done := make(chan bool, 1)
+	ready := make(chan bool, 1)
 
-// 	b.Run(testName(prefix, "Goka@Produce"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceSync(generateKey(prefix, i), valueGenerator(i))
-// 		}
+	go consumer.Consume(topicName, message, done, ready)
 
-// 		b.StopTimer()
-// 	})
+	b.Run("Sarama@Consumer", func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			<-message
+		}
+		b.StopTimer()
+	})
 
-// 	b.Run(testName(prefix, "Goka@ProduceChannel"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceAsync(generateKey(prefix, i), valueGenerator(i))
-// 		}
+	close(done)
+}
 
-// 		producer.Wait()
-// 		b.StopTimer()
-// 	})
-// }
+func BenchmarkSegmentioConsumer(b *testing.B) {
+	consumer := segmentio.NewConsumer(bootstrapServers, topicName)
+	message := make(chan interface{}, 1)
+	done := make(chan bool, 1)
+	go consumer.Consume(message, done)
 
-// func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-// 	producer := sarama.NewProducer(bootstrapServers)
+	b.Run("Segmentio@Consumer", func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			<-message
+		}
+		b.StopTimer()
+	})
 
-// 	b.Run(testName(prefix, "Sarama@Produce"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
-// 		}
-// 		b.StopTimer()
-// 	})
-
-// 	b.Run(testName(prefix, "Sarama@ProduceChannel"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceAsync(topicName, generateKey(prefix, i), valueGenerator(i))
-// 		}
-// 		producer.Wait()
-// 		b.StopTimer()
-// 	})
-// }
-
-// func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-// 	producer := segmentio.NewProducer(bootstrapServers, topicName)
-
-// 	b.Run(testName(prefix, "Segmentio@Produce"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceSync(generateKey(prefix, i), valueGenerator(i))
-// 		}
-
-// 		b.StopTimer()
-// 	})
-
-// 	b.Run(testName(prefix, "Segmentio@ProduceChannel"), func(b *testing.B) {
-// 		b.ResetTimer()
-// 		for i := 0; i < b.N; i++ {
-// 			producer.ProduceAsync(generateKey(prefix, i), valueGenerator(i))
-// 		}
-
-// 		producer.Wait()
-// 		b.StopTimer()
-// 	})
-// }
+	done <- true
+}

@@ -15,10 +15,12 @@ type Consumer struct {
 
 func NewConsumer(bootstrapServers string) *Consumer {
 	config := &kafka.ConfigMap{
-		"bootstrap.servers":  bootstrapServers,
-		"group.id":           "confluent-consumer-group",
-		"session.timeout.ms": 6000,
-		"auto.offset.reset":  "earliest",
+		"bootstrap.servers":        bootstrapServers,
+		"group.id":                 "confluent-consumer-group",
+		"session.timeout.ms":       6000,
+		"auto.offset.reset":        "earliest",
+		"enable.auto.commit":       "true",
+		"enable.auto.offset.store": "false",
 	}
 
 	consumer, err := kafka.NewConsumer(config)
