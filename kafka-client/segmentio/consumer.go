@@ -2,38 +2,43 @@ package segmentio
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"sync"
+	"time"
 
 	kafka "github.com/segmentio/kafka-go"
 )
 
 type Consumer struct {
-	BootstrapServers string
-	reader           *kafka.Reader
+	Servers         string
+	Topic           string
+	EnablePartition bool
+	Message         chan interface{}
+	Done            chan bool
 }
 
-func NewConsumer(bootstrapServers string, topic string) *Consumer {
-	brokers := strings.Split(bootstrapServers, ",")
+func (c *Consumer) Start(wg *sync.WaitGroup) {
+	c.Message = make(chan interface{}, 1)
+	c.Done = make(chan bool, 1)
 
 	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: brokers,
-		Topic:   topic,
-		GroupID: "segmentio-consumer-group",
+		Brokers: strings.Split(c.Servers, ","),
+		Topic:   c.Topic,
+		GroupID: fmt.Sprintf("segmentio-consumer-group-%d", time.Now().UnixNano()),
 	})
 
-	return &Consumer{BootstrapServers: bootstrapServers, reader: reader}
-}
+	wg.Done()
 
-func (c *Consumer) Consume(message chan interface{}, done chan bool) {
 	run := true
 
 	for run {
 		select {
-		case <-done:
+		case <-c.Done:
 			run = false
 		default:
-			msg, _ := c.reader.FetchMessage(context.Background())
-			message <- msg
+			msg, _ := reader.FetchMessage(context.Background())
+			c.Message <- msg
 		}
 	}
 }
