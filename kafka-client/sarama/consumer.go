@@ -2,71 +2,125 @@ package sarama
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/IBM/sarama"
 )
 
 type Consumer struct {
-	BootstrapServers string
-	group            sarama.ConsumerGroup
+	Servers         string
+	Topic           string
+	EnablePartition bool
+	Message         chan interface{}
+	Done            chan bool
 }
 
-func NewConsumer(bootstrapServers string) *Consumer {
-	brokers := strings.Split(bootstrapServers, ",")
+func (c *Consumer) Start(wg *sync.WaitGroup) {
+	c.Message = make(chan interface{}, 1)
+	c.Done = make(chan bool, 1)
 
 	cfg := sarama.NewConfig()
 	cfg.Version = sarama.V2_8_0_0
 	cfg.Consumer.Return.Errors = true
 	cfg.Consumer.Offsets.Initial = sarama.OffsetOldest
+
+	if c.EnablePartition {
+		c.consumePartition(wg, cfg)
+	} else {
+		c.consumeGroup(wg, cfg)
+	}
+}
+
+func (c *Consumer) consumePartition(wg *sync.WaitGroup, cfg *sarama.Config) {
+	brokers := strings.Split(c.Servers, ",")
+
+	consumer, err := sarama.NewConsumer(brokers, cfg)
+	if err != nil {
+		fmt.Printf("Failed to create consumer: %v\n", err)
+		wg.Done()
+		return
+	}
+	partitions, err := consumer.Partitions(c.Topic)
+	if err != nil {
+		fmt.Printf("Failed to create consumer: %v\n", err)
+		wg.Done()
+		return
+	}
+
+	for _, partition := range partitions {
+		pc, err := consumer.ConsumePartition(c.Topic, partition, sarama.OffsetOldest)
+		if err != nil {
+			fmt.Printf("Failed to create consumer: %v\n", err)
+			wg.Done()
+			return
+		}
+
+		go func(pc sarama.PartitionConsumer) {
+			for message := range pc.Messages() {
+				select {
+				case <-c.Done:
+					return
+				default:
+					c.Message <- message
+				}
+			}
+		}(pc)
+	}
+
+	wg.Done()
+}
+
+func (c *Consumer) consumeGroup(wg *sync.WaitGroup, cfg *sarama.Config) {
+	brokers := strings.Split(c.Servers, ",")
+
 	group, err := sarama.NewConsumerGroup(brokers, "sarama-consumer-group", cfg)
 
 	if err != nil {
-		panic(err)
+		fmt.Printf("Failed to create consumer: %v\n", err)
+		wg.Done()
+		return
 	}
 
-	return &Consumer{BootstrapServers: bootstrapServers, group: group}
-}
+	ready := make(chan bool, 1)
+	handler := handler{message: c.Message, done: c.Done, ready: ready}
 
-func (c *Consumer) Consume(topic string, message chan interface{}, done chan bool, ready chan bool) {
+	<-ready
+	wg.Done()
 	run := true
-	con := consumer{message: message, done: done, ready: ready}
 
 	for run {
 		select {
-		case <-done:
+		case <-c.Done:
 			run = false
 		default:
-			c.group.Consume(context.Background(), []string{topic}, con)
+			group.Consume(context.Background(), []string{c.Topic}, handler)
 		}
 	}
 }
 
-func (c *Consumer) Close() {
-	c.group.Close()
-}
-
-type consumer struct {
+type handler struct {
 	message chan interface{}
 	done    chan bool
 	ready   chan bool
 }
 
-func (c consumer) Setup(sarama.ConsumerGroupSession) error {
-	close(c.ready)
+func (h handler) Setup(sarama.ConsumerGroupSession) error {
+	close(h.ready)
 	return nil
 }
 
-func (c consumer) Cleanup(sarama.ConsumerGroupSession) error { return nil }
+func (handler) Cleanup(sarama.ConsumerGroupSession) error { return nil }
 
-func (c consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+func (h handler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	run := true
 	for run {
 		select {
-		case <-c.done:
+		case <-h.done:
 			run = false
 		default:
-			c.message <- claim.Messages()
+			h.message <- claim.Messages()
 		}
 	}
 	return nil

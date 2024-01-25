@@ -3,61 +3,77 @@ package confluent
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
 type Consumer struct {
-	BootstrapServers string
-	instance         *kafka.Consumer
-	wg               *sync.WaitGroup
+	Servers      string
+	EnableEvents bool
+	Topic        string
+	Message      chan interface{}
+	Done         chan bool
 }
 
-func NewConsumer(bootstrapServers string) *Consumer {
+func (c *Consumer) Start(wg *sync.WaitGroup) {
+	c.Message = make(chan interface{}, 1)
+	c.Done = make(chan bool, 1)
+
 	config := &kafka.ConfigMap{
-		"bootstrap.servers":        bootstrapServers,
-		"group.id":                 "confluent-consumer-group",
+		"bootstrap.servers":        c.Servers,
+		"group.id":                 fmt.Sprintf("confluent-consumer-group-%d", time.Now().UnixNano()),
 		"session.timeout.ms":       6000,
 		"auto.offset.reset":        "earliest",
 		"enable.auto.commit":       "true",
 		"enable.auto.offset.store": "false",
+		"go.events.channel.enable": c.EnableEvents,
 	}
 
 	consumer, err := kafka.NewConsumer(config)
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		return nil
+		wg.Done()
+		return
 	}
 
-	return &Consumer{BootstrapServers: bootstrapServers, instance: consumer, wg: &sync.WaitGroup{}}
-}
+	consumer.SubscribeTopics([]string{c.Topic}, nil)
 
-func (c *Consumer) Consume(topic string, message chan interface{}, done chan bool) {
-	c.instance.SubscribeTopics([]string{topic}, nil)
+	wg.Done()
 
 	run := true
 
 	for run {
 		select {
-		case <-done:
+		case <-c.Done:
 			run = false
 		default:
-			event := c.instance.Poll(1000)
-			if event == nil {
-				continue
-			}
-			switch e := event.(type) {
-			case *kafka.Message:
-				message <- e
-			case kafka.Error:
-				if e.Code() == kafka.ErrAllBrokersDown {
-					run = false
-				}
-			}
+			run = c.start(consumer)
 		}
 	}
 }
 
-func (c *Consumer) Close() {
-	c.instance.Close()
+func (c *Consumer) start(consumer *kafka.Consumer) bool {
+	var event kafka.Event
+
+	if c.EnableEvents {
+		event = <-consumer.Events()
+	} else {
+		event = consumer.Poll(1000)
+	}
+
+	if event == nil {
+		return true
+	}
+
+	switch e := event.(type) {
+	case *kafka.Message:
+		c.Message <- e
+	case kafka.Error:
+		if e.Code() == kafka.ErrAllBrokersDown {
+			return false
+		}
+	}
+
+	return true
 }
