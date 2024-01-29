@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/IBM/sarama"
 )
@@ -75,7 +76,7 @@ func (c *Consumer) consumePartition(wg *sync.WaitGroup, cfg *sarama.Config) {
 func (c *Consumer) consumeGroup(wg *sync.WaitGroup, cfg *sarama.Config) {
 	brokers := strings.Split(c.Servers, ",")
 
-	group, err := sarama.NewConsumerGroup(brokers, "sarama-consumer-group", cfg)
+	group, err := sarama.NewConsumerGroup(brokers, fmt.Sprintf("sarama-consumer-group-%d", time.Now().UnixNano()), cfg)
 
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
@@ -83,10 +84,8 @@ func (c *Consumer) consumeGroup(wg *sync.WaitGroup, cfg *sarama.Config) {
 		return
 	}
 
-	ready := make(chan bool, 1)
-	handler := handler{message: c.Message, done: c.Done, ready: ready}
+	handler := handler{message: c.Message, done: c.Done}
 
-	<-ready
 	wg.Done()
 	run := true
 
@@ -103,13 +102,9 @@ func (c *Consumer) consumeGroup(wg *sync.WaitGroup, cfg *sarama.Config) {
 type handler struct {
 	message chan interface{}
 	done    chan bool
-	ready   chan bool
 }
 
-func (h handler) Setup(sarama.ConsumerGroupSession) error {
-	close(h.ready)
-	return nil
-}
+func (h handler) Setup(sarama.ConsumerGroupSession) error { return nil }
 
 func (handler) Cleanup(sarama.ConsumerGroupSession) error { return nil }
 

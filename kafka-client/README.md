@@ -6,7 +6,7 @@ Benchmarks of kafka client libraries for Golang.
 
 ```bash
 go test -timeout=5h -bench=Producer -benchmem -count 5 -benchtime=10000x > results/producer_results.out
-go test -timeout=5h -bench=Consumer -benchmem -count 5 -benchtime=10000x > results/consumer_results.out
+go test -timeout=5h -bench=Consumer -benchmem -count 5 -benchtime=100000x > results/consumer_results.out
 ```
 
 ## Docker File

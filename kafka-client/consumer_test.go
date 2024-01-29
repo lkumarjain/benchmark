@@ -70,7 +70,7 @@ func BenchmarkFranzConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Confluent@ConsumePartition", func(b *testing.B) {
+	b.Run("Franz@ConsumePartition", func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -104,19 +104,21 @@ func BenchmarkSaramaConsumer(b *testing.B) {
 	consumer := sarama.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
 
 	wg := &sync.WaitGroup{}
-	// wg.Add(1)
-	// go consumer.Start(wg)
-	// wg.Wait()
+	wg.Add(1)
+	go consumer.Start(wg)
+	wg.Wait()
 
-	// b.Run("Sarama@ConsumerGroup", func(b *testing.B) {
-	// 	b.ResetTimer()
-	// 	for i := 0; i < b.N; i++ {
-	// 		<-consumer.Message
-	// 	}
-	// 	b.StopTimer()
-	// })
+	<-consumer.Message // Added this to wait till Consumer gets ready
 
-	// close(consumer.Done)
+	b.Run("Sarama@ConsumerGroup", func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			<-consumer.Message
+		}
+		b.StopTimer()
+	})
+
+	close(consumer.Done)
 
 	consumer.EnablePartition = true
 
@@ -136,18 +138,22 @@ func BenchmarkSaramaConsumer(b *testing.B) {
 }
 
 func BenchmarkSegmentioConsumer(b *testing.B) {
-	consumer := segmentio.NewConsumer(bootstrapServers, topicName)
-	message := make(chan interface{}, 1)
-	done := make(chan bool, 1)
-	go consumer.Consume(message, done)
+	consumer := segmentio.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
 
-	b.Run("Segmentio@Consumer", func(b *testing.B) {
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+	go consumer.Start(wg)
+	wg.Wait()
+
+	<-consumer.Message
+
+	b.Run("Segmentio@ConsumerFetch", func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			<-message
+			<-consumer.Message
 		}
 		b.StopTimer()
 	})
 
-	done <- true
+	close(consumer.Done)
 }

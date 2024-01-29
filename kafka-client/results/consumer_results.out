@@ -1,0 +1,46 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lkumarjain/benchmark/kafka-client
+cpu: Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz
+BenchmarkConfluentConsumer/Confluent@ConsumePoll-8         	  100000	      9837 ns/op	    1477 B/op	       9 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumePoll-8         	  100000	      8103 ns/op	    1479 B/op	       8 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumePoll-8         	  100000	      7368 ns/op	    1507 B/op	       9 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumePoll-8         	  100000	     33209 ns/op	    5586 B/op	       9 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumePoll-8         	  100000	     10402 ns/op	    1535 B/op	       9 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumeEvent-8        	  100000	      9457 ns/op	    1469 B/op	       8 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumeEvent-8        	  100000	      7947 ns/op	    1469 B/op	       8 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumeEvent-8        	  100000	      7804 ns/op	    1493 B/op	       8 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumeEvent-8        	  100000	     33654 ns/op	    5571 B/op	       8 allocs/op
+BenchmarkConfluentConsumer/Confluent@ConsumeEvent-8        	  100000	      9892 ns/op	    1525 B/op	       8 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumeRecord-8               	  100000	      6555 ns/op	    1248 B/op	       1 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumeRecord-8               	  100000	      8415 ns/op	    1674 B/op	       2 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumeRecord-8               	  100000	      8823 ns/op	    1688 B/op	       2 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumeRecord-8               	  100000	     34456 ns/op	    5985 B/op	       1 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumeRecord-8               	  100000	      9891 ns/op	    2051 B/op	       2 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumePartition-8            	  100000	      6612 ns/op	    1559 B/op	       0 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumePartition-8            	  100000	     12197 ns/op	    1650 B/op	       1 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumePartition-8            	  100000	     12594 ns/op	    1664 B/op	       1 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumePartition-8            	  100000	     48006 ns/op	    5961 B/op	       0 allocs/op
+BenchmarkFranzConsumer/Franz@ConsumePartition-8            	  100000	     11124 ns/op	    2027 B/op	       1 allocs/op
+BenchmarkGokaConsumer/Goka@Consumer-8                      	  100000	       395.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGokaConsumer/Goka@Consumer-8                      	  100000	       428.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGokaConsumer/Goka@Consumer-8                      	  100000	       401.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGokaConsumer/Goka@Consumer-8                      	  100000	       414.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGokaConsumer/Goka@Consumer-8                      	  100000	       461.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumerGroup-8             	  100000	       582.9 ns/op	       1 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumerGroup-8             	  100000	       436.8 ns/op	     335 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumerGroup-8             	  100000	       498.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumerGroup-8             	  100000	       518.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumerGroup-8             	  100000	       564.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumePartition-8          	  100000	      6338 ns/op	    1574 B/op	       0 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumePartition-8          	  100000	      7987 ns/op	    1335 B/op	       1 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumePartition-8          	  100000	      8159 ns/op	    1346 B/op	       1 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumePartition-8          	  100000	     32875 ns/op	    5983 B/op	       1 allocs/op
+BenchmarkSaramaConsumer/Sarama@ConsumePartition-8          	  100000	     10353 ns/op	    1719 B/op	       1 allocs/op
+BenchmarkSegmentioConsumer/Segmentio@ConsumerFetch-8       	  100000	      4365 ns/op	    1635 B/op	       3 allocs/op
+BenchmarkSegmentioConsumer/Segmentio@ConsumerFetch-8       	  100000	      4537 ns/op	    1489 B/op	       3 allocs/op
+BenchmarkSegmentioConsumer/Segmentio@ConsumerFetch-8       	  100000	      4405 ns/op	    1385 B/op	       3 allocs/op
+BenchmarkSegmentioConsumer/Segmentio@ConsumerFetch-8       	  100000	     16062 ns/op	    5972 B/op	       3 allocs/op
+BenchmarkSegmentioConsumer/Segmentio@ConsumerFetch-8       	  100000	      4410 ns/op	    1663 B/op	       3 allocs/op
+PASS
+ok  	github.com/lkumarjain/benchmark/kafka-client	46.786s

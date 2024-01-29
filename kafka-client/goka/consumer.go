@@ -2,6 +2,8 @@ package goka
 
 import (
 	"context"
+	"fmt"
+	"io"
 	"log"
 	"strings"
 	"sync"
@@ -32,13 +34,19 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 	goka.ReplaceGlobalConfig(cfg)
 
 	topicStream := goka.Stream(c.Topic)
-	g := goka.DefineGroup("goka-consumer-group", goka.Input(topicStream, new(codec.String), c.handler), goka.Persist(new(codec.Int64)))
+	group := goka.Group(fmt.Sprintf("goka-consumer-group-%d", time.Now().UnixNano()))
+	g := goka.DefineGroup(group,
+		goka.Input(topicStream, new(codec.String), c.handler), goka.Persist(new(codec.Int64)))
 
 	config := goka.NewTopicManagerConfig()
 	config.Table.Replication = 1
 	config.CreateTopicTimeout = time.Second * 10
 
-	p, err := goka.NewProcessor(brokers, g, goka.WithTopicManagerBuilder(goka.TopicManagerBuilderWithTopicManagerConfig(config)))
+	log := log.New(io.Discard, "", log.LstdFlags)
+
+	p, err := goka.NewProcessor(brokers, g,
+		goka.WithTopicManagerBuilder(goka.TopicManagerBuilderWithTopicManagerConfig(config)),
+		goka.WithLogger(log))
 	if err != nil {
 		log.Fatalf("error creating processor: %v", err)
 		wg.Done()
