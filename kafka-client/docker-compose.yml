@@ -34,7 +34,7 @@ services:
       KAFKA_LOG_RETENTION_HOURS : 5
       KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 60000
       KAFKA_CREATE_TOPICS_SEPARATOR: ","
-      KAFKA_CREATE_TOPICS: "test_input:32:1,test_output:32:1"
+      KAFKA_CREATE_TOPICS: "test_broker_1kb:32:1,test_broker_5kb:32:1,test_broker_10kb:32:1"
     restart: always
     depends_on:
       - zookeeper

@@ -22,6 +22,7 @@ func BenchmarkProducer(b *testing.B) {
 
 func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
 	producer := confluent.NewProducer(bootstrapServers)
+	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Confluent@Produce"), func(b *testing.B) {
 		b.ResetTimer()
@@ -43,6 +44,7 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 
 func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
 	producer := franz.NewProducer(bootstrapServers)
+	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Franz@Produce"), func(b *testing.B) {
 		b.ResetTimer()
@@ -65,6 +67,7 @@ func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int
 }
 
 func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
+	topicName := topicName(prefix)
 	producer := goka.NewProducer(bootstrapServers, topicName)
 
 	b.Run(testName(prefix, "Goka@Produce"), func(b *testing.B) {
@@ -89,6 +92,7 @@ func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int)
 
 func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
 	producer := sarama.NewProducer(bootstrapServers)
+	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Sarama@Produce"), func(b *testing.B) {
 		b.ResetTimer()
@@ -109,6 +113,8 @@ func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(in
 }
 
 func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
+	topicName := topicName(prefix)
+
 	producer := segmentio.NewProducer(bootstrapServers, topicName)
 
 	b.Run(testName(prefix, "Segmentio@Produce"), func(b *testing.B) {

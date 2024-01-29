@@ -11,7 +11,18 @@ import (
 	"github.com/lkumarjain/benchmark/kafka-client/segmentio"
 )
 
-func BenchmarkConfluentConsumer(b *testing.B) {
+func BenchmarkConsumer(b *testing.B) {
+	for _, tt := range tests {
+		benchmarkConfluentConsumer(b, tt.name)
+		benchmarkFranzConsumer(b, tt.name)
+		benchmarkGokaConsumer(b, tt.name)
+		benchmarkSaramaConsumer(b, tt.name)
+		benchmarkSegmentioConsumer(b, tt.name)
+	}
+}
+
+func benchmarkConfluentConsumer(b *testing.B, prefix string) {
+	topicName := topicName(prefix)
 	consumer := confluent.Consumer{Servers: bootstrapServers, EnableEvents: false, Topic: topicName}
 
 	wg := &sync.WaitGroup{}
@@ -19,7 +30,7 @@ func BenchmarkConfluentConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Confluent@ConsumePoll", func(b *testing.B) {
+	b.Run(testName(prefix, "Confluent@ConsumePoll"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -35,7 +46,7 @@ func BenchmarkConfluentConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Confluent@ConsumeEvent", func(b *testing.B) {
+	b.Run(testName(prefix, "Confluent@ConsumeEvent"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -46,7 +57,9 @@ func BenchmarkConfluentConsumer(b *testing.B) {
 	close(consumer.Done)
 }
 
-func BenchmarkFranzConsumer(b *testing.B) {
+func benchmarkFranzConsumer(b *testing.B, prefix string) {
+	topicName := topicName(prefix)
+
 	consumer := franz.Consumer{Servers: bootstrapServers, EnablePartition: false, Topic: topicName}
 
 	wg := &sync.WaitGroup{}
@@ -54,7 +67,7 @@ func BenchmarkFranzConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Franz@ConsumeRecord", func(b *testing.B) {
+	b.Run(testName(prefix, "Franz@ConsumeRecord"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -70,7 +83,7 @@ func BenchmarkFranzConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Franz@ConsumePartition", func(b *testing.B) {
+	b.Run(testName(prefix, "Franz@ConsumePartition"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -81,7 +94,9 @@ func BenchmarkFranzConsumer(b *testing.B) {
 	close(consumer.Done)
 }
 
-func BenchmarkGokaConsumer(b *testing.B) {
+func benchmarkGokaConsumer(b *testing.B, prefix string) {
+	topicName := topicName(prefix)
+
 	consumer := goka.Consumer{Servers: bootstrapServers, Topic: topicName}
 
 	wg := &sync.WaitGroup{}
@@ -89,7 +104,7 @@ func BenchmarkGokaConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Goka@Consumer", func(b *testing.B) {
+	b.Run(testName(prefix, "Goka@Consumer"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -100,7 +115,9 @@ func BenchmarkGokaConsumer(b *testing.B) {
 	close(consumer.Done)
 }
 
-func BenchmarkSaramaConsumer(b *testing.B) {
+func benchmarkSaramaConsumer(b *testing.B, prefix string) {
+	topicName := topicName(prefix)
+
 	consumer := sarama.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
 
 	wg := &sync.WaitGroup{}
@@ -110,7 +127,7 @@ func BenchmarkSaramaConsumer(b *testing.B) {
 
 	<-consumer.Message // Added this to wait till Consumer gets ready
 
-	b.Run("Sarama@ConsumerGroup", func(b *testing.B) {
+	b.Run(testName(prefix, "Sarama@ConsumerGroup"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -126,7 +143,7 @@ func BenchmarkSaramaConsumer(b *testing.B) {
 	go consumer.Start(wg)
 	wg.Wait()
 
-	b.Run("Sarama@ConsumePartition", func(b *testing.B) {
+	b.Run(testName(prefix, "Sarama@ConsumePartition"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message
@@ -137,7 +154,9 @@ func BenchmarkSaramaConsumer(b *testing.B) {
 	close(consumer.Done)
 }
 
-func BenchmarkSegmentioConsumer(b *testing.B) {
+func benchmarkSegmentioConsumer(b *testing.B, prefix string) {
+	topicName := topicName(prefix)
+
 	consumer := segmentio.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
 
 	wg := &sync.WaitGroup{}
@@ -147,7 +166,7 @@ func BenchmarkSegmentioConsumer(b *testing.B) {
 
 	<-consumer.Message
 
-	b.Run("Segmentio@ConsumerFetch", func(b *testing.B) {
+	b.Run(testName(prefix, "Segmentio@ConsumerFetch"), func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			<-consumer.Message

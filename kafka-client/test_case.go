@@ -1,8 +1,10 @@
 package kafkaclient
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-var topicName = "test_input"
 var bootstrapServers = "localhost:9092"
 
 var tests = []struct {
@@ -32,4 +34,8 @@ func generateLarge(index int) string {
 
 func testName(prefix string, function string) string {
 	return fmt.Sprintf("%s - %s", prefix, function)
+}
+
+func topicName(prefix string) string {
+	return fmt.Sprintf("test_broker_%s", strings.ToLower(prefix))
 }
