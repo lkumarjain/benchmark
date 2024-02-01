@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 
 	kafka "github.com/segmentio/kafka-go"
@@ -18,7 +17,7 @@ type Consumer struct {
 	Done            chan bool
 }
 
-func (c *Consumer) Start(wg *sync.WaitGroup) {
+func (c *Consumer) Start() {
 	c.Message = make(chan interface{}, 1)
 	c.Done = make(chan bool, 1)
 
@@ -28,17 +27,17 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 		GroupID: fmt.Sprintf("segmentio-consumer-group-%d", time.Now().UnixNano()),
 	})
 
-	wg.Done()
+	go func() {
+		run := true
 
-	run := true
-
-	for run {
-		select {
-		case <-c.Done:
-			run = false
-		default:
-			msg, _ := reader.FetchMessage(context.Background())
-			c.Message <- msg
+		for run {
+			select {
+			case <-c.Done:
+				run = false
+			default:
+				msg, _ := reader.FetchMessage(context.Background())
+				c.Message <- msg
+			}
 		}
-	}
+	}()
 }

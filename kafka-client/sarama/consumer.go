@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -18,7 +17,7 @@ type Consumer struct {
 	Done            chan bool
 }
 
-func (c *Consumer) Start(wg *sync.WaitGroup) {
+func (c *Consumer) Start() {
 	c.Message = make(chan interface{}, 1)
 	c.Done = make(chan bool, 1)
 
@@ -28,25 +27,23 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 	cfg.Consumer.Offsets.Initial = sarama.OffsetOldest
 
 	if c.EnablePartition {
-		c.consumePartition(wg, cfg)
+		c.consumePartition(cfg)
 	} else {
-		c.consumeGroup(wg, cfg)
+		c.consumeGroup(cfg)
 	}
 }
 
-func (c *Consumer) consumePartition(wg *sync.WaitGroup, cfg *sarama.Config) {
+func (c *Consumer) consumePartition(cfg *sarama.Config) {
 	brokers := strings.Split(c.Servers, ",")
 
 	consumer, err := sarama.NewConsumer(brokers, cfg)
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		wg.Done()
 		return
 	}
 	partitions, err := consumer.Partitions(c.Topic)
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		wg.Done()
 		return
 	}
 
@@ -54,7 +51,6 @@ func (c *Consumer) consumePartition(wg *sync.WaitGroup, cfg *sarama.Config) {
 		pc, err := consumer.ConsumePartition(c.Topic, partition, sarama.OffsetOldest)
 		if err != nil {
 			fmt.Printf("Failed to create consumer: %v\n", err)
-			wg.Done()
 			return
 		}
 
@@ -69,34 +65,32 @@ func (c *Consumer) consumePartition(wg *sync.WaitGroup, cfg *sarama.Config) {
 			}
 		}(pc)
 	}
-
-	wg.Done()
 }
 
-func (c *Consumer) consumeGroup(wg *sync.WaitGroup, cfg *sarama.Config) {
+func (c *Consumer) consumeGroup(cfg *sarama.Config) {
 	brokers := strings.Split(c.Servers, ",")
 
 	group, err := sarama.NewConsumerGroup(brokers, fmt.Sprintf("sarama-consumer-group-%d", time.Now().UnixNano()), cfg)
 
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		wg.Done()
 		return
 	}
 
 	handler := handler{message: c.Message, done: c.Done}
 
-	wg.Done()
-	run := true
+	go func() {
+		run := true
 
-	for run {
-		select {
-		case <-c.Done:
-			run = false
-		default:
-			group.Consume(context.Background(), []string{c.Topic}, handler)
+		for run {
+			select {
+			case <-c.Done:
+				run = false
+			default:
+				group.Consume(context.Background(), []string{c.Topic}, handler)
+			}
 		}
-	}
+	}()
 }
 
 type handler struct {

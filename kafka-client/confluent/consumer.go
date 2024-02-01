@@ -2,7 +2,6 @@ package confluent
 
 import (
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -16,7 +15,7 @@ type Consumer struct {
 	Done         chan bool
 }
 
-func (c *Consumer) Start(wg *sync.WaitGroup) {
+func (c *Consumer) Start() {
 	c.Message = make(chan interface{}, 1)
 	c.Done = make(chan bool, 1)
 
@@ -33,24 +32,26 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 	consumer, err := kafka.NewConsumer(config)
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		wg.Done()
 		return
 	}
 
 	consumer.SubscribeTopics([]string{c.Topic}, nil)
 
-	wg.Done()
+	go func() {
+		run := true
 
-	run := true
-
-	for run {
-		select {
-		case <-c.Done:
-			run = false
-		default:
-			run = c.start(consumer)
+		for run {
+			select {
+			case <-c.Done:
+				run = false
+			default:
+				run = c.start(consumer)
+			}
 		}
-	}
+
+		consumer.Close()
+	}()
+
 }
 
 func (c *Consumer) start(consumer *kafka.Consumer) bool {

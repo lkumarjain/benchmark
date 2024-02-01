@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -21,7 +20,7 @@ type Consumer struct {
 	Done    chan bool
 }
 
-func (c *Consumer) Start(wg *sync.WaitGroup) {
+func (c *Consumer) Start() {
 	c.Message = make(chan interface{}, 1)
 	c.Done = make(chan bool, 1)
 
@@ -40,7 +39,7 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 
 	config := goka.NewTopicManagerConfig()
 	config.Table.Replication = 1
-	config.CreateTopicTimeout = time.Second * 10
+	config.CreateTopicTimeout = time.Minute
 
 	log := log.New(io.Discard, "", log.LstdFlags)
 
@@ -48,16 +47,16 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 		goka.WithTopicManagerBuilder(goka.TopicManagerBuilderWithTopicManagerConfig(config)),
 		goka.WithLogger(log))
 	if err != nil {
-		log.Fatalf("error creating processor: %v", err)
-		wg.Done()
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 
-	wg.Done()
-	ctx, cancel := context.WithCancel(context.Background())
-	go p.Run(ctx)
-	<-c.Done
-	cancel()
+	go func() {
+		ctx, cancel := context.WithCancel(context.Background())
+		go p.Run(ctx)
+		<-c.Done
+		cancel()
+	}()
 }
 
 func (c *Consumer) handler(ctx goka.Context, msg interface{}) {

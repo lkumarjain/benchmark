@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/twmb/franz-go/pkg/kgo"
@@ -18,7 +17,7 @@ type Consumer struct {
 	Done            chan bool
 }
 
-func (c *Consumer) Start(wg *sync.WaitGroup) {
+func (c *Consumer) Start() {
 	c.Message = make(chan interface{}, 1)
 	c.Done = make(chan bool, 1)
 
@@ -33,22 +32,21 @@ func (c *Consumer) Start(wg *sync.WaitGroup) {
 
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %v\n", err)
-		wg.Done()
 		return
 	}
 
-	wg.Done()
+	go func() {
+		run := true
 
-	run := true
-
-	for run {
-		select {
-		case <-c.Done:
-			run = false
-		default:
-			run = c.start(consumer)
+		for run {
+			select {
+			case <-c.Done:
+				run = false
+			default:
+				run = c.start(consumer)
+			}
 		}
-	}
+	}()
 }
 
 func (c *Consumer) start(consumer *kgo.Client) bool {
