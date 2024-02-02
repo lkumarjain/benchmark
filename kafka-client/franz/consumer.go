@@ -3,6 +3,7 @@ package franz
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -31,11 +32,13 @@ func (c *Consumer) Start() {
 	)
 
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %v\n", err)
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 
 	go func() {
+		defer consumer.Close()
+
 		run := true
 
 		for run {

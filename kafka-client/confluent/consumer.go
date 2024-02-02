@@ -2,6 +2,7 @@ package confluent
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -31,13 +32,15 @@ func (c *Consumer) Start() {
 
 	consumer, err := kafka.NewConsumer(config)
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %v\n", err)
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 
 	consumer.SubscribeTopics([]string{c.Topic}, nil)
 
 	go func() {
+		defer consumer.Close()
+
 		run := true
 
 		for run {
@@ -48,8 +51,6 @@ func (c *Consumer) Start() {
 				run = c.start(consumer)
 			}
 		}
-
-		consumer.Close()
 	}()
 
 }

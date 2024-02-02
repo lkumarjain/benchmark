@@ -14,7 +14,7 @@ func BenchmarkConsumer(b *testing.B) {
 	for _, tt := range tests {
 		benchmarkConfluentConsumer(b, tt.name)
 		benchmarkFranzConsumer(b, tt.name)
-		// benchmarkGokaConsumer(b, tt.name)
+		benchmarkGokaConsumer(b, tt.name)
 		benchmarkSaramaConsumer(b, tt.name)
 		benchmarkSegmentioConsumer(b, tt.name)
 	}

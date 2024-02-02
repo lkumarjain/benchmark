@@ -3,6 +3,7 @@ package sarama
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -38,12 +39,12 @@ func (c *Consumer) consumePartition(cfg *sarama.Config) {
 
 	consumer, err := sarama.NewConsumer(brokers, cfg)
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %v\n", err)
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 	partitions, err := consumer.Partitions(c.Topic)
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %v\n", err)
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 
@@ -73,13 +74,14 @@ func (c *Consumer) consumeGroup(cfg *sarama.Config) {
 	group, err := sarama.NewConsumerGroup(brokers, fmt.Sprintf("sarama-consumer-group-%d", time.Now().UnixNano()), cfg)
 
 	if err != nil {
-		fmt.Printf("Failed to create consumer: %v\n", err)
+		log.Panicf("error creating processor: %v", err)
 		return
 	}
 
 	handler := handler{message: c.Message, done: c.Done}
 
 	go func() {
+		defer group.Close()
 		run := true
 
 		for run {

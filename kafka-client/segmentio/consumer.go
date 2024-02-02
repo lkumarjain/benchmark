@@ -28,6 +28,8 @@ func (c *Consumer) Start() {
 	})
 
 	go func() {
+		defer reader.Close()
+
 		run := true
 
 		for run {
