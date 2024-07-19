@@ -33,13 +33,29 @@ All the [benchmarks](/kafka-client/results/producer_results.out) are performed w
 
 | Sync Producer                                                                    | Async Producer                                                                     |
 | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ![SyncProducerTime.png](/kafka-client/results/SyncProducerMemoryAllocations.png) | ![AsyncProducerTime.png](/kafka-client/results/AsyncProducerMemoryAllocations.png) |
+| ![SyncProducerMemoryAllocations.png](/kafka-client/results/SyncProducerMemoryAllocations.png) | ![AsyncProducerMemoryAllocations.png](/kafka-client/results/AsyncProducerMemoryAllocations.png) |
 
 #### Bytes / Operation
 
 | Sync Producer                                                        | Async Producer                                                         |
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| ![SyncProducerTime.png](/kafka-client/results/SyncProducerBytes.png) | ![AsyncProducerTime.png](/kafka-client/results/AsyncProducerBytes.png) |
+| ![SyncProducerBytes.png](/kafka-client/results/SyncProducerBytes.png) | ![AsyncProducerBytes.png](/kafka-client/results/AsyncProducerBytes.png) |
+
+### Consumer
+
+All the [benchmarks](/kafka-client/results/consumer_results.out) are performed with `10K` samples size and `5` iterations.
+
+#### Nenosecond / Operation
+
+![ConsumerTime.png](/kafka-client/results/ConsumerTime.png)
+
+#### Memory Allocation / Operation
+
+![ConsumerAllocation.png](/kafka-client/results/ConsumerAllocation.png)
+
+#### Bytes / Operation
+
+![ConsumerBytes.png](/kafka-client/results/ConsumerBytes.png)
 
 ## Libraries
 
