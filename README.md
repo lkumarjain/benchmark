@@ -8,3 +8,5 @@ The idea of this repository is to have multiple benchmarks of multiple Golang li
 
 - [Benchmarks of expression evaluation libraries for Golang](./expression-evaluation/)
 - [Benchmarks of in-memory cache libraries for Golang](./in-memory-cache/)
+- [Benchmarks of Kafka-client libraries for Golang](./kafka-client/)
+- [Benchmarks of worker-pool libraries for Golang](./worker-pool/)
