@@ -16,7 +16,7 @@ func BenchmarkAnts(b *testing.B) {
 		runtime.GC()
 
 		for _, concur := range concurrency {
-			b.Run(fmt.Sprintf("%s_Concurrency=%d", test.name, concur), func(b *testing.B) {
+			b.Run(fmt.Sprintf("%s/Concurrency=%d", test.name, concur), func(b *testing.B) {
 				job := func(_ interface{}) {
 					defer wg.Done()
 

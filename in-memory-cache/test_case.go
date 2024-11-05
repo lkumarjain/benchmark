@@ -28,5 +28,5 @@ func generateLarge(index int) string {
 }
 
 func testName(prefix string, function string) string {
-	return fmt.Sprintf("%s - %s", prefix, function)
+	return fmt.Sprintf("%s/%s", prefix, function)
 }

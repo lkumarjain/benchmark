@@ -16,7 +16,7 @@ func BenchmarkPond(b *testing.B) {
 		runtime.GC()
 
 		for _, concur := range concurrency {
-			b.Run(fmt.Sprintf("%s_Concurrency=%d", test.name, concur), func(b *testing.B) {
+			b.Run(fmt.Sprintf("%s/Concurrency=%d", test.name, concur), func(b *testing.B) {
 				mu := &sync.Mutex{}
 				wp := pond.NewResultPool[string](100)
 				results := make([]pond.Result[string], 0)

@@ -1,18 +1,19 @@
-dependencies:
-	go mod tidy
-	go mod vendor
-
 benchmark-expression-evaluation:
-	cd  expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+	cd result && make dependencies && make build
+	cd expression-evaluation && make dependencies && make benchmark && make generate-graph
 
 benchmark-in-memory-cache:
-	cd  in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+	cd result && make dependencies && make build
+	cd in-memory-cache && make dependencies && make benchmark
 
 benchmark-kafka-producer:
-	cd  kafka-client && go test -timeout=5h -bench=Producer -benchmem -count 5 -benchtime=10000x > results/producer.out
+	cd result && make dependencies && make build
+	cd  kafka-client && make dependencies && make benchmark-producer
 
 benchmark-kafka-consumer:
-	cd  kafka-client && go test -timeout=5h -bench=Consumer -benchmem -count 5 -benchtime=10000x > results/consumer.out
+	cd result && make dependencies && make build
+	cd  kafka-client && make dependencies && make benchmark-consumer
 
 benchmark-worker-pool:
-	cd  worker-pool && go test -timeout=5h -bench=. -benchmem -count 5 -benchtime=1000000x > results/results.out
+	cd result && make dependencies && make build
+	cd  worker-pool && make dependencies && make benchmark && make generate-graph

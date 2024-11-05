@@ -10,13 +10,25 @@ go test -timeout=5h -bench=. -benchmem -count 5 -benchtime=1000000x > results/re
 
 ## Results
 
-All the [benchmarks](/worker-pool/results/) are performed in the `Intel(R) Core(TM) i7-1165G7 CPU @ 2.80GHz` machine with a standalone Kafka running in the docker.
+All the [benchmarks](/worker-pool/results/) are performed in the `Intel(R) Core(TM) i7-1165G7 CPU @ 2.80GHz` machine with `100K` samples and `5` iterations.
 
-#### Microsecond / Operation
+#### Time / Operation
+| Data                                                      | Concurrency                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![data_time_bar.png](/worker-pool/results/data_time_bar.png) | ![concurrency_time_bar.png](/worker-pool/results/concurrency_time_bar.png) |
+| ![data_time_table.png](/worker-pool/results/data_time_table.png) | ![concurrency_time_table.png](/worker-pool/results/concurrency_time_table.png) |
 
-#### Memory Allocation / Operation
+#### Allocations / Operation
+| Data                                                      | Concurrency                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![data_allocations_bar.png](/worker-pool/results/data_allocations_bar.png) | ![concurrency_allocations_bar.png](/worker-pool/results/concurrency_allocations_bar.png) |
+| ![data_allocations_table.png](/worker-pool/results/data_allocations_table.png) | ![concurrency_allocations_table.png](/worker-pool/results/concurrency_allocations_table.png) |
 
 #### Bytes / Operation
+| Data                                                      | Concurrency                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![data_memory_bar.png](/worker-pool/results/data_memory_bar.png) | ![concurrency_memory_bar.png](/worker-pool/results/concurrency_memory_bar.png) |
+| ![data_memory_table.png](/worker-pool/results/data_memory_table.png) | ![concurrency_memory_table.png](/worker-pool/results/concurrency_memory_table.png) |
 
 ## Libraries
 

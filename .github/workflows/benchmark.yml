@@ -15,7 +15,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: '1.22'
 
     - name: Dependencies
       run: | 
@@ -26,7 +26,7 @@ jobs:
     - name: Benchmark
       run: | 
         echo "Benchmark Expression Evaluation libraries"
-        cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go test -bench=. -benchmem -count 5 -benchtime=10000x > results/results.out
+        cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
   
   Benchmark-In-Memory-Cache:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: '1.22'
 
     - name: Dependencies
       run: | 
@@ -47,5 +47,26 @@ jobs:
     - name: Benchmark
       run: | 
         echo "Benchmark In-Memory Cache libraries"
-        cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 5 -benchtime=100000x > results/results.out
+        cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
+  
+  Benchmark-worker-pool:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+
+    - name: Dependencies
+      run: | 
+        echo "Download Dependencies"
+        go mod tidy
+        go mod vendor
+
+    - name: Benchmark
+      run: | 
+        echo "Benchmark In-Memory Cache libraries"
+        cd  /home/runner/work/benchmark/benchmark/worker-pool && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
 
