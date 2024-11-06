@@ -49,7 +49,7 @@ jobs:
         echo "Benchmark In-Memory Cache libraries"
         cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
   
-  Benchmark-worker-pool:
+  Benchmark-Worker-Pool:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -62,11 +62,11 @@ jobs:
     - name: Dependencies
       run: | 
         echo "Download Dependencies"
-        /home/runner/work/benchmark/benchmark/worker-pool && go mod tidy
-        /home/runner/work/benchmark/benchmark/worker-pool && go mod vendor
+        cd /home/runner/work/benchmark/benchmark/worker-pool && go mod tidy
+        cd /home/runner/work/benchmark/benchmark/worker-pool && go mod vendor
 
     - name: Benchmark
       run: | 
-        echo "Benchmark In-Memory Cache libraries"
+        echo "Benchmark Worker Pool libraries"
         cd /home/runner/work/benchmark/benchmark/worker-pool && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
 
