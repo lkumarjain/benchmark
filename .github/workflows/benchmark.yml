@@ -20,8 +20,8 @@ jobs:
     - name: Dependencies
       run: | 
         echo "Download Dependencies"
-        go mod tidy
-        go mod vendor
+        cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go mod tidy
+        cd  /home/runner/work/benchmark/benchmark/expression-evaluation && go mod vendor
 
     - name: Benchmark
       run: | 
@@ -41,8 +41,8 @@ jobs:
     - name: Dependencies
       run: | 
         echo "Download Dependencies"
-        go mod tidy
-        go mod vendor
+        cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go mod tidy
+        cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go mod vendor
 
     - name: Benchmark
       run: | 
@@ -62,11 +62,11 @@ jobs:
     - name: Dependencies
       run: | 
         echo "Download Dependencies"
-        go mod tidy
-        go mod vendor
+        /home/runner/work/benchmark/benchmark/worker-pool && go mod tidy
+        /home/runner/work/benchmark/benchmark/worker-pool && go mod vendor
 
     - name: Benchmark
       run: | 
         echo "Benchmark In-Memory Cache libraries"
-        cd  /home/runner/work/benchmark/benchmark/worker-pool && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
+        cd /home/runner/work/benchmark/benchmark/worker-pool && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
 

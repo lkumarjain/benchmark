@@ -12,17 +12,30 @@ Benchmarks of in-memory cache libraries for Golang.
 
 All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `100K` samples and `5` iterations.
 
-![Average](/in-memory-cache/results/Average_Cache.png)
+### Time / Operation
 
-### Average ns / operation
+|Function| Chart View                                                      | Table View                                                        |
+|-----| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+|Get Function| ![get_time_bar.png](/in-memory-cache/results/get_time_bar.png) | ![get_time_table.png](/in-memory-cache/results/get_time_table.png) |
+|Set Function| ![set_time_bar.png](/in-memory-cache/results/set_time_bar.png) | ![set_time_table.png](/in-memory-cache/results/set_time_table.png) |
+|Remove Function| ![remove_time_bar.png](/in-memory-cache/results/remove_time_bar.png) | ![remove_time_table.png](/in-memory-cache/results/remove_time_table.png) |
 
-#### Set Function
+#### Allocations / Operation
 
-![Average_ns_per_operation_set.png](/in-memory-cache/results/Average_ns_per_operation_set.png)
+|Function| Chart View                                                      | Table View                                                        |
+|-----| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+|Get Function| ![get_allocations_bar.png](/in-memory-cache/results/get_allocations_bar.png) | ![get_allocations_table.png](/in-memory-cache/results/get_allocations_table.png) |
+|Set Function| ![set_allocations_bar.png](/in-memory-cache/results/set_allocations_bar.png) | ![set_allocations_table.png](/in-memory-cache/results/set_allocations_table.png) |
+|Remove Function| ![remove_allocations_bar.png](/in-memory-cache/results/remove_allocations_bar.png) | ![remove_allocations_table.png](/in-memory-cache/results/remove_allocations_table.png) |
 
-#### Get & Remove Function
+#### Bytes / Operation
 
-![Average_ns_per_operation_get_remove](/in-memory-cache/results/Average_ns_per_operation_get_remove.png)
+|Function| Chart View                                                      | Table View                                                        |
+|-----| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+|Get Function| ![get_memory_bar.png](/in-memory-cache/results/get_memory_bar.png) | ![get_memory_table.png](/in-memory-cache/results/get_memory_table.png) |
+|Set Function| ![set_memory_bar.png](/in-memory-cache/results/set_memory_bar.png) | ![set_memory_table.png](/in-memory-cache/results/set_memory_table.png) |
+|Remove Function| ![remove_memory_bar.png](/in-memory-cache/results/remove_memory_bar.png) | ![remove_memory_table.png](/in-memory-cache/results/remove_memory_table.png) |
+
 
 ## Libraries
 

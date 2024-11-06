@@ -118,7 +118,7 @@ func (r *Result) addBenchmark(b benchmark) {
 		return b.key(r.KeyTemplate) == value.key(r.KeyTemplate)
 	})
 
-	if index <= 0 {
+	if index < 0 {
 		r.benchmarks = append(r.benchmarks, b)
 		index = len(r.benchmarks) - 1
 	}
@@ -149,9 +149,9 @@ func (r *Result) addBenchmark(b benchmark) {
 }
 
 func (r *Result) Plot() error {
-	timeTable := newTable(r.TableWidth, r.TableLegendSpan, r.options, r.legends, r.LegendTemplate, r.OptionsTemplate)
-	memoryTable := newTable(r.TableWidth, r.TableLegendSpan, r.options, r.legends, r.LegendTemplate, r.OptionsTemplate)
-	allocationsTable := newTable(r.TableWidth, r.TableLegendSpan, r.options, r.legends, r.LegendTemplate, r.OptionsTemplate)
+	timeTable := newTable(r.TableWidth, r.TableLegendSpan, r.legends, r.options, r.OptionsTemplate, r.LegendTemplate, TimeDataType)
+	memoryTable := newTable(r.TableWidth, r.TableLegendSpan, r.legends, r.options, r.OptionsTemplate, r.LegendTemplate, MemoryDataType)
+	allocationsTable := newTable(r.TableWidth, r.TableLegendSpan, r.legends, r.options, r.OptionsTemplate, r.LegendTemplate, AllocationsDataType)
 
 	timeBar := newBar(r.BarChartWidth, r.BarChartHeight, r.options, r.legends, TimeDataType, r.LegendTemplate, r.OptionsTemplate)
 	timeBar.title = "Time/Operation"
@@ -163,9 +163,9 @@ func (r *Result) Plot() error {
 	allocationsBar.title = "Allocations/Operation"
 
 	for _, b := range r.benchmarks {
-		timeTable.addBenchmark(b, TimeDataType)
-		memoryTable.addBenchmark(b, MemoryDataType)
-		allocationsTable.addBenchmark(b, AllocationsDataType)
+		timeTable.addBenchmark(b)
+		memoryTable.addBenchmark(b)
+		allocationsTable.addBenchmark(b)
 
 		timeBar.addBenchmark(b)
 		memoryBar.addBenchmark(b)

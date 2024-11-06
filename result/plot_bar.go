@@ -7,7 +7,6 @@ import (
 )
 
 var (
-	padding   = charts.Box{Top: 100, Bottom: 100, Left: 100, Right: 300}
 	fontSize  = float64(30)
 	imageType = "png"
 	theme     = "grafana"
@@ -85,11 +84,18 @@ func (ba *bar) optionFunc(opt *charts.ChartOption) {
 		opt.SeriesList[i].MarkPoint.SymbolSize = 50
 	}
 
+	chartPadding := charts.Box{Top: 100, Bottom: 100, Left: 100, Right: 100}
+	if len(ba.options) > 10 {
+		chartPadding = charts.Box{Top: 100, Bottom: 500, Left: 100, Right: 100}
+		opt.XAxis.TextRotation = 90
+		opt.XAxis.LabelOffset = charts.Box{Top: -200, Bottom: 0, Left: 20, Right: 0}
+	}
+
 	opt.Type = imageType
 	opt.Theme = theme
 	opt.Width = ba.width
 	opt.Height = ba.height
-	opt.Padding = padding
+	opt.Padding = chartPadding
 
 	opt.XAxis.FontSize = fontSize
 

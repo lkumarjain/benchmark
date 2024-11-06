@@ -12,19 +12,24 @@ Benchmarks of expression evaluation libraries for Golang.
 
 All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `10K` samples and `5` iterations.
 
-### Compile
+#### Time / Operation
+| Compile                                                      | Evaluate                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![compile_time_bar.png](/expression-evaluation/results/compile_time_bar.png) | ![evaluate_time_bar.png](/expression-evaluation/results/evaluate_time_bar.png) |
+| ![compile_time_table.png](/expression-evaluation/results/compile_time_table.png) | ![evaluate_time_table.png](/expression-evaluation/results/evaluate_time_table.png) |
 
-Average Compile time for each expression library
+#### Allocations / Operation
 
-![Average Compile](/expression-evaluation/results/Average_Compile.png)
-![Average Compile Expand](/expression-evaluation/results/Average_Compile_Expand.png)
+| Compile                                                      | Evaluate                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![compile_allocations_bar.png](/expression-evaluation/results/compile_allocations_bar.png) | ![evaluate_allocations_bar.png](/expression-evaluation/results/evaluate_allocations_bar.png) |
+| ![compile_allocations_table.png](/expression-evaluation/results/compile_allocations_table.png) | ![evaluate_allocations_table.png](/expression-evaluation/results/evaluate_allocations_table.png) |
 
-### Evaluation
-
-Average Evaluation time for each expression library
-
-![Average Evaluate](/expression-evaluation/results/Average_Evaluate.png)
-![Average Evaluate Expand](/expression-evaluation/results/Average_Evaluate_Expand.png)
+#### Bytes / Operation
+| Compile                                                      | Evaluate                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ![compile_memory_bar.png](/expression-evaluation/results/compile_memory_bar.png) | ![evaluate_memory_bar.png](/expression-evaluation/results/evaluate_memory_bar.png) |
+| ![compile_memory_table.png](/expression-evaluation/results/compile_memory_table.png) | ![evaluate_memory_table.png](/expression-evaluation/results/evaluate_memory_table.png) |
 
 ## Libraries
 
