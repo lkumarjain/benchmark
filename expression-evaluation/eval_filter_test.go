@@ -37,7 +37,7 @@ func benchmarkEvalFilter(b *testing.B, prefix string, input Input, expression st
 	})
 }
 
-func programEvalFilter(b *testing.B, input Input, expression string) *expr.Eval {
+func programEvalFilter(b *testing.B, _ Input, expression string) *expr.Eval {
 	eval := expr.New(expression)
 
 	err := eval.Prepare()

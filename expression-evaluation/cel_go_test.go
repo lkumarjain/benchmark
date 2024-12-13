@@ -35,7 +35,7 @@ func benchmarkCelGO(b *testing.B, prefix string, input Input, expression string)
 	})
 }
 
-func programCelGO(b *testing.B, input Input, expression string) expr.Program {
+func programCelGO(b *testing.B, _ Input, expression string) expr.Program {
 	env, err := expr.NewEnv(
 		expr.Variable("ID", expr.IntType),
 		expr.Variable("Name", expr.StringType),

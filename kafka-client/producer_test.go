@@ -13,10 +13,10 @@ import (
 func BenchmarkProducer(b *testing.B) {
 	for _, tt := range tests {
 		benchmarkConfluentProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkSegmentioProducer(b, tt.name, tt.valueGenerator)
+		benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
+		benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
+		benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
+		benchmarkSegmentioProducer(b, tt.name, tt.valueGenerator)
 	}
 }
 
@@ -24,13 +24,13 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 	producer := confluent.NewProducer(bootstrapServers)
 	topicName := topicName(prefix)
 
-	// b.Run(testName(prefix, "Confluent@Produce"), func(b *testing.B) {
-	// 	b.ResetTimer()
-	// 	for i := 0; i < b.N; i++ {
-	// 		producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
-	// 	}
-	// 	b.StopTimer()
-	// })
+	b.Run(testName(prefix, "Confluent@Produce"), func(b *testing.B) {
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			producer.ProduceSync(topicName, generateKey(prefix, i), valueGenerator(i))
+		}
+		b.StopTimer()
+	})
 
 	b.Run(testName(prefix, "Confluent@ProduceChannel"), func(b *testing.B) {
 		b.ResetTimer()

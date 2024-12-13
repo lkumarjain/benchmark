@@ -1,0 +1,66 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lkumarjain/benchmark-synchronization-techniques
+cpu: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+BenchmarkAtomic/Atomic/Parallelism=1-2         	  100000	         9.738 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=1-2         	  100000	        11.80 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=1-2         	  100000	        12.83 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=1-2         	  100000	        12.20 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=1-2         	  100000	        11.19 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=10-2        	  100000	        13.11 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=10-2        	  100000	        14.65 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=10-2        	  100000	        16.40 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=10-2        	  100000	        12.85 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=10-2        	  100000	        11.02 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=50-2        	  100000	        31.82 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=50-2        	  100000	        14.32 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=50-2        	  100000	        14.25 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=50-2        	  100000	        15.49 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=50-2        	  100000	        13.40 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=100-2       	  100000	        32.13 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=100-2       	  100000	        33.38 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=100-2       	  100000	        12.86 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=100-2       	  100000	        12.81 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAtomic/Atomic/Parallelism=100-2       	  100000	        27.17 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=1-2       	  100000	       156.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=1-2       	  100000	       137.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=1-2       	  100000	       131.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=1-2       	  100000	       136.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=1-2       	  100000	       141.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=10-2      	  100000	       146.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=10-2      	  100000	       139.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=10-2      	  100000	       152.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=10-2      	  100000	       151.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=10-2      	  100000	       152.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=50-2      	  100000	       143.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=50-2      	  100000	       144.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=50-2      	  100000	       124.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=50-2      	  100000	       133.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=50-2      	  100000	       144.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=100-2     	  100000	       177.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=100-2     	  100000	       192.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=100-2     	  100000	       273.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=100-2     	  100000	       138.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkChannel/Channel/Parallelism=100-2     	  100000	       140.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=1-2           	  100000	        20.65 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=1-2           	  100000	        21.52 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=1-2           	  100000	        24.36 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=1-2           	  100000	        21.91 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=1-2           	  100000	        21.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=10-2          	  100000	        39.63 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=10-2          	  100000	        36.65 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=10-2          	  100000	        37.70 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=10-2          	  100000	        38.05 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=10-2          	  100000	        35.83 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=50-2          	  100000	        66.93 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=50-2          	  100000	        34.02 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=50-2          	  100000	        67.18 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=50-2          	  100000	        51.06 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=50-2          	  100000	        55.27 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=100-2         	  100000	        61.35 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=100-2         	  100000	        64.14 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=100-2         	  100000	        68.99 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=100-2         	  100000	        59.58 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMutex/Mutex/Parallelism=100-2         	  100000	        66.17 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/lkumarjain/benchmark-synchronization-techniques	0.574s
