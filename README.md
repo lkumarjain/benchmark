@@ -6,8 +6,8 @@ A benchmark is a type of function that executes a code segment multiple times an
 
 The idea of this repository is to have multiple benchmarks of multiple Golang libraries at one place.
 
-- [Benchmarks of expression evaluation libraries for Golang](./expression-evaluation/)
-- [Benchmarks of in-memory cache libraries for Golang](./in-memory-cache/)
-- [Benchmarks of Kafka-client libraries for Golang](./kafka-client/)
-- [Benchmarks of synchronization-techniques for Golang](./synchronization-techniques/)
-- [Benchmarks of worker-pool libraries for Golang](./worker-pool/)
+- [Expression Evaluation](./expression-evaluation/)
+- [In-Memory Cache](./in-memory-cache/)
+- [Kafka-Clients](./kafka-client/)
+- [Synchronization Techniques](./synchronization-techniques/)
+- [Worker-Pool](./worker-pool/)
