@@ -49,6 +49,27 @@ jobs:
         echo "Benchmark In-Memory Cache libraries"
         cd  /home/runner/work/benchmark/benchmark/in-memory-cache && go test -bench=. -benchmem -count 1 -benchtime=100x > results/results.out
 
+  Benchmark-JSON:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+
+    - name: Dependencies
+      run: | 
+        echo "Download Dependencies"
+        cd  /home/runner/work/benchmark/benchmark/json && go mod tidy
+        cd  /home/runner/work/benchmark/benchmark/json && go mod vendor
+
+    - name: Benchmark
+      run: | 
+        echo "Benchmark In-Memory Cache libraries"
+        cd  /home/runner/work/benchmark/benchmark/json && go test -bench=. -benchmem -count 1 -benchtime=10x > results/results.out
+
   Benchmark-Synchronization-Techniques:
     runs-on: ubuntu-latest
     steps:

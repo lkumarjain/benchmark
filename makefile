@@ -6,6 +6,10 @@ benchmark-in-memory-cache:
 	cd result && make dependencies && make build
 	cd in-memory-cache && make dependencies && make benchmark && make generate-graph
 
+benchmark-json:
+	cd result && make dependencies && make build
+	cd json && make dependencies && make benchmark && make generate-graph
+
 benchmark-kafka-producer:
 	cd result && make dependencies && make build
 	cd kafka-client && make dependencies && make benchmark-producer
@@ -26,5 +30,6 @@ generate-benchmark-graph:
 	cd result && make dependencies && make build
 	cd expression-evaluation && make generate-graph
 	cd in-memory-cache && make generate-graph
+	cd json && make generate-graph
 	cd synchronization-techniques && make generate-graph
 	cd worker-pool && make generate-graph
