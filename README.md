@@ -10,6 +10,6 @@ The idea of this repository is to have multiple benchmarks of multiple Golang li
 - [In-Memory Cache](./in-memory-cache/)
 - [JSON](./json/)
 - [Kafka-Clients](./kafka-client/)
-- [Synchronization Techniques](./synchronization-techniques/)
 - [Sql-Builder](/sql-builder/)
+- [Synchronization Techniques](./synchronization-techniques/)
 - [Worker-Pool](./worker-pool/)

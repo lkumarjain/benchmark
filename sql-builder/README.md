@@ -43,7 +43,7 @@ All the [benchmarks](/results/results.out) are performed in the `Intel(R) Core(T
 
 :warning: Please note that these libraries are benchmarked against storage of sample payloads (i.e. 1, 5, and 10 KB). You are encouraged to benchmark with your custom payloads.
 
-- [Doug-martin/Goqu] (https://github.com/doug-martin/goqu) - SQL builder and query library for golang
+- [Doug Martin/Goqu](https://github.com/doug-martin/goqu) - SQL builder and query library for golang
 - [Gocraft/Dbr](https://github.com/gocraft/dbr) - Additions to Go's database/sql for super fast performance and convenience.
 - [Masterminds/Squirrel](https://github.com/Masterminds/squirrel) - Fluent SQL generation for golang
 - [Stephenafamo/Bob](https://github.com/stephenafamo/bob) - SQL query builder and ORM/Factory generator for Go with support for PostgreSQL, MySQL and SQLite.
