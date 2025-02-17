@@ -18,6 +18,10 @@ benchmark-kafka-consumer:
 	cd result && make dependencies && make build
 	cd kafka-client && make dependencies && make benchmark-consumer
 
+benchmark-sql-builder:
+	cd result && make dependencies && make build
+	cd  sql-builder && make dependencies && make benchmark && make generate-graph
+
 benchmark-synchronization-techniques:
 	cd result && make dependencies && make build
 	cd  synchronization-techniques && make dependencies && make benchmark && make generate-graph
@@ -31,5 +35,6 @@ generate-benchmark-graph:
 	cd expression-evaluation && make generate-graph
 	cd in-memory-cache && make generate-graph
 	cd json && make generate-graph
+	cd sql-builder && make generate-graph
 	cd synchronization-techniques && make generate-graph
 	cd worker-pool && make generate-graph

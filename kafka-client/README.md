@@ -17,7 +17,7 @@ docker-compose -p kafka -f docker-compose.yml up
 
 ## Results
 
-All the [benchmarks](/kafka-client/results) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with a standalone Kafka running in the docker.
+All the [benchmarks](/kafka-client/results) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with a standalone Kafka running in the docker where lower values are good.
 
 ### Producer
 

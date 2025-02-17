@@ -11,4 +11,5 @@ The idea of this repository is to have multiple benchmarks of multiple Golang li
 - [JSON](./json/)
 - [Kafka-Clients](./kafka-client/)
 - [Synchronization Techniques](./synchronization-techniques/)
+- [Sql-Builder](/sql-builder/)
 - [Worker-Pool](./worker-pool/)

@@ -10,7 +10,7 @@ Benchmarks of expression evaluation libraries for Golang.
 
 ## Results
 
-All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `10K` samples and `5` iterations.
+All the [benchmarks](/results.out) are performed in the `Intel(R) Core(TM) i7-7660U CPU @ 2.50GHz` machine with `10K` samples and `5` iterations where lower values are good.
 
 #### Time / Operation
 | Compile                                                      | Evaluate                                                        |

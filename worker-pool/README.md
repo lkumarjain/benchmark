@@ -10,7 +10,7 @@ go test -timeout=5h -bench=. -benchmem -count 5 -benchtime=1000000x > results/re
 
 ## Results
 
-All the [benchmarks](/worker-pool/results/) are performed in the `Intel(R) Core(TM) i7-1165G7 CPU @ 2.80GHz` machine with `100K` samples and `5` iterations.
+All the [benchmarks](/worker-pool/results/) are performed in the `Intel(R) Core(TM) i7-1165G7 CPU @ 2.80GHz` machine with `1M` samples and `5` iterations where lower values are good.
 
 #### Time / Operation
 | Data                                                      | Concurrency                                                        |
