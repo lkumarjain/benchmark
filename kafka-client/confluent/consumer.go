@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type Consumer struct {
