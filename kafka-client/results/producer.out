@@ -1,0 +1,36 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lkumarjain/benchmark/kafkaclient
+cpu: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+BenchmarkProducer/1KB_-_Segmentio@Produce-2         	      10	 737084807 ns/op	   78835 B/op	     476 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@Produce-2         	      10	  10675510 ns/op	   29630 B/op	      52 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@Produce-2         	      10	  11511005 ns/op	   29773 B/op	      51 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@Produce-2         	      10	  10622587 ns/op	   35439 B/op	      44 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@Produce-2         	      10	  10526430 ns/op	   35516 B/op	      44 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@ProduceChannel-2  	      10	   1143344 ns/op	   29408 B/op	      49 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@ProduceChannel-2  	      10	   1073980 ns/op	   22556 B/op	      47 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@ProduceChannel-2  	      10	   1056196 ns/op	   35283 B/op	      45 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@ProduceChannel-2  	      10	   1103304 ns/op	   34967 B/op	      41 allocs/op
+BenchmarkProducer/1KB_-_Segmentio@ProduceChannel-2  	      10	 137010922 ns/op	   40352 B/op	      87 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@Produce-2         	      10	 696642629 ns/op	   80648 B/op	     535 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@Produce-2         	      10	  10709811 ns/op	   38801 B/op	      51 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@Produce-2         	      10	  10654420 ns/op	   46121 B/op	      51 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@Produce-2         	      10	  10684223 ns/op	   45923 B/op	      46 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@Produce-2         	      10	  10617114 ns/op	   38035 B/op	      43 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@ProduceChannel-2  	      10	 146872884 ns/op	   48985 B/op	     157 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@ProduceChannel-2  	      10	 129569675 ns/op	   50812 B/op	      97 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@ProduceChannel-2  	      10	   1129359 ns/op	   45139 B/op	      47 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@ProduceChannel-2  	      10	 130186433 ns/op	   55058 B/op	     149 allocs/op
+BenchmarkProducer/5KB_-_Segmentio@ProduceChannel-2  	      10	 145600736 ns/op	   48904 B/op	      86 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@Produce-2        	      10	 699572970 ns/op	   99679 B/op	     535 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@Produce-2        	      10	  10678461 ns/op	   55328 B/op	      52 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@Produce-2        	      10	  10671189 ns/op	   59737 B/op	      51 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@Produce-2        	      10	  10549172 ns/op	   50204 B/op	      45 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@Produce-2        	      10	  12047107 ns/op	   51245 B/op	      45 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@ProduceChannel-2 	      10	 140631662 ns/op	   70348 B/op	     281 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@ProduceChannel-2 	      10	 145657428 ns/op	   65499 B/op	     220 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@ProduceChannel-2 	      10	   1103462 ns/op	   59027 B/op	      46 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@ProduceChannel-2 	      10	 138086182 ns/op	   55064 B/op	      88 allocs/op
+BenchmarkProducer/10KB_-_Segmentio@ProduceChannel-2 	      10	 137252172 ns/op	   68960 B/op	     271 allocs/op
+PASS
+ok  	github.com/lkumarjain/benchmark/kafkaclient	44.794s

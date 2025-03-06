@@ -2,11 +2,13 @@ package segmentio
 
 import (
 	"context"
+	"crypto/tls"
 	"strings"
 	"sync"
 	"time"
 
 	kafka "github.com/segmentio/kafka-go"
+	"github.com/segmentio/kafka-go/sasl/plain"
 )
 
 type Producer struct {
@@ -16,8 +18,14 @@ type Producer struct {
 	asyncWriter      *kafka.Writer
 }
 
-func NewProducer(bootstrapServers string, topic string) *Producer {
+func NewProducer(bootstrapServers string, topic string, authenticator bool, userName string, password string) *Producer {
 	brokers := strings.Split(bootstrapServers, ",")
+
+	transport := &kafka.Transport{
+		SASL:        plain.Mechanism{Username: userName, Password: password},
+		DialTimeout: 10 * time.Second,
+		TLS:         &tls.Config{InsecureSkipVerify: true},
+	}
 
 	syncWriter := &kafka.Writer{
 		Addr:         kafka.TCP(brokers...),
@@ -28,6 +36,10 @@ func NewProducer(bootstrapServers string, topic string) *Producer {
 		BatchTimeout: 10 * time.Millisecond,
 	}
 
+	if authenticator {
+		syncWriter.Transport = transport
+	}
+
 	asyncWriter := &kafka.Writer{
 		Addr:         kafka.TCP(brokers...),
 		Topic:        topic,
@@ -36,6 +48,10 @@ func NewProducer(bootstrapServers string, topic string) *Producer {
 		BatchSize:    100,
 		BatchTimeout: 10 * time.Millisecond,
 		Async:        true,
+	}
+
+	if authenticator {
+		asyncWriter.Transport = transport
 	}
 
 	producer := &Producer{BootstrapServers: brokers, syncWriter: syncWriter, asyncWriter: asyncWriter, wg: &sync.WaitGroup{}}

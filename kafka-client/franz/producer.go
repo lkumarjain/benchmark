@@ -2,10 +2,14 @@ package franz
 
 import (
 	"context"
+	"crypto/tls"
+	"net"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/twmb/franz-go/pkg/kgo"
+	"github.com/twmb/franz-go/pkg/sasl/plain"
 )
 
 type Producer struct {
@@ -14,9 +18,17 @@ type Producer struct {
 	instance         *kgo.Client
 }
 
-func NewProducer(bootstrapServers string) *Producer {
+func NewProducer(bootstrapServers string, authenticator bool, userName string, password string) *Producer {
 	brokers := strings.Split(bootstrapServers, ",")
-	instance, err := kgo.NewClient(kgo.SeedBrokers(brokers...))
+	opts := []kgo.Opt{kgo.SeedBrokers(brokers...)}
+
+	if authenticator {
+		tlsDialer := &tls.Dialer{NetDialer: &net.Dialer{Timeout: 10 * time.Second}}
+		opts = append(opts, kgo.SASL(plain.Auth{User: userName, Pass: password}.AsMechanism()))
+		opts = append(opts, kgo.Dialer(tlsDialer.DialContext))
+	}
+
+	instance, err := kgo.NewClient(opts...)
 	if err != nil {
 		panic(err)
 	}

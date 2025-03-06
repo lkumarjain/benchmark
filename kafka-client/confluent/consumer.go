@@ -9,11 +9,14 @@ import (
 )
 
 type Consumer struct {
-	Servers      string
-	EnableEvents bool
-	Topic        string
-	Message      chan interface{}
-	Done         chan bool
+	Servers       string
+	EnableEvents  bool
+	Topic         string
+	Message       chan interface{}
+	Done          chan bool
+	Authenticator bool
+	UserName      string
+	Password      string
 }
 
 func (c *Consumer) Start() {
@@ -28,6 +31,13 @@ func (c *Consumer) Start() {
 		"enable.auto.commit":       "true",
 		"enable.auto.offset.store": "false",
 		"go.events.channel.enable": c.EnableEvents,
+	}
+
+	if c.Authenticator {
+		config.SetKey("sasl.mechanisms", "PLAIN")
+		config.SetKey("sasl.username", c.UserName)
+		config.SetKey("sasl.password", c.Password)
+		config.SetKey("security.protocol", "SASL_SSL")
 	}
 
 	consumer, err := kafka.NewConsumer(config)

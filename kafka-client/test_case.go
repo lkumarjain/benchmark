@@ -5,7 +5,12 @@ import (
 	"strings"
 )
 
-var bootstrapServers = "localhost:9092"
+var (
+	bootstrapServers = "localhost:9092"
+	userName         = "XXXXX"
+	password         = "XXXXX"
+	authenticator    = false
+)
 
 var tests = []struct {
 	name           string

@@ -16,6 +16,9 @@ type Consumer struct {
 	EnablePartition bool
 	Message         chan interface{}
 	Done            chan bool
+	Authenticator   bool
+	UserName        string
+	Password        string
 }
 
 func (c *Consumer) Start() {
@@ -26,6 +29,14 @@ func (c *Consumer) Start() {
 	cfg.Version = sarama.V2_8_0_0
 	cfg.Consumer.Return.Errors = true
 	cfg.Consumer.Offsets.Initial = sarama.OffsetOldest
+
+	if c.Authenticator {
+		cfg.Net.TLS.Enable = true
+		cfg.Net.SASL.Enable = true
+		cfg.Net.SASL.User = c.UserName
+		cfg.Net.SASL.Password = c.Password
+		cfg.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+	}
 
 	if c.EnablePartition {
 		c.consumePartition(cfg)

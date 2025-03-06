@@ -1,18 +1,16 @@
-module github.com/lkumarjain/benchmark-kafka-client
+module github.com/lkumarjain/benchmark/kafkaclient
 
 go 1.22.2
 
 require (
 	github.com/IBM/sarama v1.43.3
 	github.com/confluentinc/confluent-kafka-go/v2 v2.8.0
-	github.com/lkumarjain/benchmark v0.0.0-20241025155624-f2dfb0afd096
 	github.com/lovoo/goka v1.1.12
 	github.com/segmentio/kafka-go v0.4.47
 	github.com/twmb/franz-go v1.18.0
 )
 
 require (
-	github.com/confluentinc/confluent-kafka-go v1.9.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20230731223053-c322873962e3 // indirect

@@ -1,0 +1,21 @@
+goos: linux
+goarch: amd64
+pkg: github.com/lkumarjain/benchmark/kafkaclient
+cpu: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+BenchmarkConsumer/1KB_-_Segmentio@ConsumerFetch-2         	      10	  13241217 ns/op	   12118 B/op	       7 allocs/op
+BenchmarkConsumer/1KB_-_Segmentio@ConsumerFetch-2         	      10	  14673756 ns/op	    5472 B/op	      17 allocs/op
+BenchmarkConsumer/1KB_-_Segmentio@ConsumerFetch-2         	      10	   9501614 ns/op	   11562 B/op	      10 allocs/op
+BenchmarkConsumer/1KB_-_Segmentio@ConsumerFetch-2         	      10	   6154097 ns/op	   11159 B/op	       8 allocs/op
+BenchmarkConsumer/1KB_-_Segmentio@ConsumerFetch-2         	      10	  18342677 ns/op	   29720 B/op	      80 allocs/op
+BenchmarkConsumer/5KB_-_Segmentio@ConsumerFetch-2         	      10	  16464697 ns/op	  199375 B/op	      65 allocs/op
+BenchmarkConsumer/5KB_-_Segmentio@ConsumerFetch-2         	      10	   3394042 ns/op	   12156 B/op	       7 allocs/op
+BenchmarkConsumer/5KB_-_Segmentio@ConsumerFetch-2         	      10	   5294848 ns/op	   39860 B/op	      19 allocs/op
+BenchmarkConsumer/5KB_-_Segmentio@ConsumerFetch-2         	      10	  20777237 ns/op	   28269 B/op	      45 allocs/op
+BenchmarkConsumer/5KB_-_Segmentio@ConsumerFetch-2         	      10	   6032610 ns/op	   54758 B/op	      24 allocs/op
+BenchmarkConsumer/10KB_-_Segmentio@ConsumerFetch-2        	      10	  24664052 ns/op	  243932 B/op	      54 allocs/op
+BenchmarkConsumer/10KB_-_Segmentio@ConsumerFetch-2        	      10	  16768555 ns/op	   23593 B/op	      13 allocs/op
+BenchmarkConsumer/10KB_-_Segmentio@ConsumerFetch-2        	      10	  21835249 ns/op	   20273 B/op	      17 allocs/op
+BenchmarkConsumer/10KB_-_Segmentio@ConsumerFetch-2        	      10	  23069812 ns/op	  124653 B/op	      65 allocs/op
+BenchmarkConsumer/10KB_-_Segmentio@ConsumerFetch-2        	      10	   7421628 ns/op	   30877 B/op	      20 allocs/op
+PASS
+ok  	github.com/lkumarjain/benchmark/kafkaclient	81.380s

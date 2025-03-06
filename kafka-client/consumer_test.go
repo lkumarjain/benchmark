@@ -3,26 +3,27 @@ package kafkaclient
 import (
 	"testing"
 
-	"github.com/lkumarjain/benchmark/kafka-client/confluent"
-	"github.com/lkumarjain/benchmark/kafka-client/franz"
-	"github.com/lkumarjain/benchmark/kafka-client/goka"
-	"github.com/lkumarjain/benchmark/kafka-client/sarama"
-	"github.com/lkumarjain/benchmark/kafka-client/segmentio"
+	"github.com/lkumarjain/benchmark/kafkaclient/confluent"
+	"github.com/lkumarjain/benchmark/kafkaclient/franz"
+	"github.com/lkumarjain/benchmark/kafkaclient/goka"
+	"github.com/lkumarjain/benchmark/kafkaclient/sarama"
+	"github.com/lkumarjain/benchmark/kafkaclient/segmentio"
 )
 
 func BenchmarkConsumer(b *testing.B) {
 	for _, tt := range tests {
-		benchmarkConfluentConsumer(b, tt.name)
-		benchmarkFranzConsumer(b, tt.name)
-		benchmarkGokaConsumer(b, tt.name)
-		benchmarkSaramaConsumer(b, tt.name)
+		// benchmarkConfluentConsumer(b, tt.name)
+		// benchmarkFranzConsumer(b, tt.name)
+		// benchmarkGokaConsumer(b, tt.name)
+		// benchmarkSaramaConsumer(b, tt.name)
 		benchmarkSegmentioConsumer(b, tt.name)
 	}
 }
 
 func benchmarkConfluentConsumer(b *testing.B, prefix string) {
 	topicName := topicName(prefix)
-	consumer := confluent.Consumer{Servers: bootstrapServers, EnableEvents: false, Topic: topicName}
+	consumer := confluent.Consumer{Servers: bootstrapServers, EnableEvents: false, Topic: topicName,
+		Authenticator: authenticator, UserName: userName, Password: password}
 
 	b.Run(testName(prefix, "Confluent@ConsumePoll"), func(b *testing.B) {
 		consumer.Start()
@@ -56,7 +57,8 @@ func benchmarkConfluentConsumer(b *testing.B, prefix string) {
 func benchmarkFranzConsumer(b *testing.B, prefix string) {
 	topicName := topicName(prefix)
 
-	consumer := franz.Consumer{Servers: bootstrapServers, EnablePartition: false, Topic: topicName}
+	consumer := franz.Consumer{Servers: bootstrapServers, EnablePartition: false, Topic: topicName,
+		Authenticator: authenticator, UserName: userName, Password: password}
 
 	b.Run(testName(prefix, "Franz@ConsumeRecord"), func(b *testing.B) {
 		consumer.Start()
@@ -90,7 +92,8 @@ func benchmarkFranzConsumer(b *testing.B, prefix string) {
 func benchmarkGokaConsumer(b *testing.B, prefix string) {
 	topicName := topicName(prefix)
 
-	consumer := goka.Consumer{Servers: bootstrapServers, Topic: topicName}
+	consumer := goka.Consumer{Servers: bootstrapServers, Topic: topicName,
+		Authenticator: authenticator, UserName: userName, Password: password}
 
 	b.Run(testName(prefix, "Goka@Consumer"), func(b *testing.B) {
 		consumer.Start()
@@ -109,7 +112,8 @@ func benchmarkGokaConsumer(b *testing.B, prefix string) {
 func benchmarkSaramaConsumer(b *testing.B, prefix string) {
 	topicName := topicName(prefix)
 
-	consumer := sarama.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
+	consumer := sarama.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false,
+		Authenticator: authenticator, UserName: userName, Password: password}
 
 	b.Run(testName(prefix, "Sarama@ConsumerGroup"), func(b *testing.B) {
 		consumer.Start()
@@ -144,7 +148,8 @@ func benchmarkSaramaConsumer(b *testing.B, prefix string) {
 func benchmarkSegmentioConsumer(b *testing.B, prefix string) {
 	topicName := topicName(prefix)
 
-	consumer := segmentio.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false}
+	consumer := segmentio.Consumer{Servers: bootstrapServers, Topic: topicName, EnablePartition: false,
+		Authenticator: authenticator, UserName: userName, Password: password}
 
 	b.Run(testName(prefix, "Segmentio@ConsumerFetch"), func(b *testing.B) {
 		consumer.Start()

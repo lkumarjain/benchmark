@@ -12,8 +12,17 @@ type Producer struct {
 	wg               *sync.WaitGroup
 }
 
-func NewProducer(bootstrapServers string) *Producer {
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": bootstrapServers})
+func NewProducer(bootstrapServers string, authenticator bool, userName string, password string) *Producer {
+	cfg := &kafka.ConfigMap{"bootstrap.servers": bootstrapServers}
+
+	if authenticator {
+		cfg.SetKey("sasl.mechanisms", "PLAIN")
+		cfg.SetKey("sasl.username", userName)
+		cfg.SetKey("sasl.password", password)
+		cfg.SetKey("security.protocol", "SASL_SSL")
+	}
+
+	p, err := kafka.NewProducer(cfg)
 	if err != nil {
 		panic(err)
 	}

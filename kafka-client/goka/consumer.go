@@ -14,10 +14,13 @@ import (
 )
 
 type Consumer struct {
-	Servers string
-	Topic   string
-	Message chan interface{}
-	Done    chan bool
+	Servers       string
+	Topic         string
+	Message       chan interface{}
+	Done          chan bool
+	Authenticator bool
+	UserName      string
+	Password      string
 }
 
 func (c *Consumer) Start() {
@@ -30,6 +33,15 @@ func (c *Consumer) Start() {
 	cfg.Consumer.Offsets.Initial = sarama.OffsetOldest
 	cfg.Version = sarama.V2_8_0_0
 	cfg.Consumer.Return.Errors = true
+
+	if c.Authenticator {
+		cfg.Net.TLS.Enable = true
+		cfg.Net.SASL.Enable = true
+		cfg.Net.SASL.User = c.UserName
+		cfg.Net.SASL.Password = c.Password
+		cfg.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+	}
+
 	goka.ReplaceGlobalConfig(cfg)
 
 	topicStream := goka.Stream(c.Topic)

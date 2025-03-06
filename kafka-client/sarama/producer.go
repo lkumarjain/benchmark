@@ -14,12 +14,20 @@ type Producer struct {
 	asyncInstance    sarama.AsyncProducer
 }
 
-func NewProducer(bootstrapServers string) *Producer {
+func NewProducer(bootstrapServers string, authenticator bool, userName string, password string) *Producer {
 	config := sarama.NewConfig()
-	config.Version = sarama.V1_0_1_0
+	config.Version = sarama.V3_6_0_0
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Retry.Max = 10
 	config.Producer.Return.Successes = true
+
+	if authenticator {
+		config.Net.TLS.Enable = true
+		config.Net.SASL.Enable = true
+		config.Net.SASL.User = userName
+		config.Net.SASL.Password = password
+		config.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+	}
 
 	brokers := strings.Split(bootstrapServers, ",")
 

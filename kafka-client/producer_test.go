@@ -3,25 +3,25 @@ package kafkaclient
 import (
 	"testing"
 
-	"github.com/lkumarjain/benchmark/kafka-client/confluent"
-	"github.com/lkumarjain/benchmark/kafka-client/franz"
-	"github.com/lkumarjain/benchmark/kafka-client/goka"
-	"github.com/lkumarjain/benchmark/kafka-client/sarama"
-	"github.com/lkumarjain/benchmark/kafka-client/segmentio"
+	"github.com/lkumarjain/benchmark/kafkaclient/confluent"
+	"github.com/lkumarjain/benchmark/kafkaclient/franz"
+	"github.com/lkumarjain/benchmark/kafkaclient/goka"
+	"github.com/lkumarjain/benchmark/kafkaclient/sarama"
+	"github.com/lkumarjain/benchmark/kafkaclient/segmentio"
 )
 
 func BenchmarkProducer(b *testing.B) {
 	for _, tt := range tests {
-		benchmarkConfluentProducer(b, tt.name, tt.valueGenerator)
-		benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
-		benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
-		benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
+		// benchmarkConfluentProducer(b, tt.name, tt.valueGenerator)
+		// benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
+		// benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
+		// benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
 		benchmarkSegmentioProducer(b, tt.name, tt.valueGenerator)
 	}
 }
 
 func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-	producer := confluent.NewProducer(bootstrapServers)
+	producer := confluent.NewProducer(bootstrapServers, authenticator, userName, password)
 	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Confluent@Produce"), func(b *testing.B) {
@@ -43,7 +43,7 @@ func benchmarkConfluentProducer(b *testing.B, prefix string, valueGenerator func
 }
 
 func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-	producer := franz.NewProducer(bootstrapServers)
+	producer := franz.NewProducer(bootstrapServers, authenticator, userName, password)
 	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Franz@Produce"), func(b *testing.B) {
@@ -68,7 +68,7 @@ func benchmarkFranzProducer(b *testing.B, prefix string, valueGenerator func(int
 
 func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
 	topicName := topicName(prefix)
-	producer := goka.NewProducer(bootstrapServers, topicName)
+	producer := goka.NewProducer(bootstrapServers, topicName, authenticator, userName, password)
 
 	b.Run(testName(prefix, "Goka@Produce"), func(b *testing.B) {
 		b.ResetTimer()
@@ -91,7 +91,7 @@ func benchmarkGokaProducer(b *testing.B, prefix string, valueGenerator func(int)
 }
 
 func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
-	producer := sarama.NewProducer(bootstrapServers)
+	producer := sarama.NewProducer(bootstrapServers, authenticator, userName, password)
 	topicName := topicName(prefix)
 
 	b.Run(testName(prefix, "Sarama@Produce"), func(b *testing.B) {
@@ -115,7 +115,7 @@ func benchmarkSaramaProducer(b *testing.B, prefix string, valueGenerator func(in
 func benchmarkSegmentioProducer(b *testing.B, prefix string, valueGenerator func(int) string) {
 	topicName := topicName(prefix)
 
-	producer := segmentio.NewProducer(bootstrapServers, topicName)
+	producer := segmentio.NewProducer(bootstrapServers, topicName, authenticator, userName, password)
 
 	b.Run(testName(prefix, "Segmentio@Produce"), func(b *testing.B) {
 		b.ResetTimer()

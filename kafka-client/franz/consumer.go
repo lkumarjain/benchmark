@@ -2,12 +2,15 @@ package franz
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
+	"net"
 	"strings"
 	"time"
 
 	"github.com/twmb/franz-go/pkg/kgo"
+	"github.com/twmb/franz-go/pkg/sasl/plain"
 )
 
 type Consumer struct {
@@ -16,6 +19,9 @@ type Consumer struct {
 	Topic           string
 	Message         chan interface{}
 	Done            chan bool
+	Authenticator   bool
+	UserName        string
+	Password        string
 }
 
 func (c *Consumer) Start() {
@@ -24,12 +30,20 @@ func (c *Consumer) Start() {
 
 	brokers := strings.Split(c.Servers, ",")
 
-	consumer, err := kgo.NewClient(
+	opts := []kgo.Opt{
 		kgo.SeedBrokers(brokers...),
 		kgo.ConsumerGroup(fmt.Sprintf("franz-consumer-group-%d", time.Now().UnixNano())),
 		kgo.ConsumeTopics(c.Topic),
 		kgo.DisableAutoCommit(),
-	)
+	}
+
+	if c.Authenticator {
+		tlsDialer := &tls.Dialer{NetDialer: &net.Dialer{Timeout: 10 * time.Second}}
+		opts = append(opts, kgo.SASL(plain.Auth{User: c.UserName, Pass: c.Password}.AsMechanism()))
+		opts = append(opts, kgo.Dialer(tlsDialer.DialContext))
+	}
+
+	consumer, err := kgo.NewClient(opts...)
 
 	if err != nil {
 		log.Panicf("error creating processor: %v", err)
