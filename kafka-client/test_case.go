@@ -16,8 +16,8 @@ var tests = []struct {
 	name           string
 	valueGenerator func(int) string
 }{
-	{name: "1KB", valueGenerator: generateSmall},
-	{name: "5KB", valueGenerator: generateMedium},
+	{name: "01KB", valueGenerator: generateSmall},
+	{name: "05KB", valueGenerator: generateMedium},
 	{name: "10KB", valueGenerator: generateLarge},
 }
 
@@ -38,7 +38,7 @@ func generateLarge(index int) string {
 }
 
 func testName(prefix string, function string) string {
-	return fmt.Sprintf("%s - %s", prefix, function)
+	return fmt.Sprintf("%s/%s", prefix, function)
 }
 
 func topicName(prefix string) string {
