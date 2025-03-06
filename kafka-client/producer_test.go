@@ -12,10 +12,10 @@ import (
 
 func BenchmarkProducer(b *testing.B) {
 	for _, tt := range tests {
-		// benchmarkConfluentProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
-		// benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
+		benchmarkConfluentProducer(b, tt.name, tt.valueGenerator)
+		benchmarkFranzProducer(b, tt.name, tt.valueGenerator)
+		benchmarkGokaProducer(b, tt.name, tt.valueGenerator)
+		benchmarkSaramaProducer(b, tt.name, tt.valueGenerator)
 		benchmarkSegmentioProducer(b, tt.name, tt.valueGenerator)
 	}
 }

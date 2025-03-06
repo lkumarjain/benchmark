@@ -31,6 +31,8 @@ func (c *Consumer) Start() {
 		"enable.auto.commit":       "true",
 		"enable.auto.offset.store": "false",
 		"go.events.channel.enable": c.EnableEvents,
+		"log.connection.close":     false,
+		"enable.metrics.push":      false,
 	}
 
 	if c.Authenticator {

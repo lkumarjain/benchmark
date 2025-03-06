@@ -13,7 +13,11 @@ type Producer struct {
 }
 
 func NewProducer(bootstrapServers string, authenticator bool, userName string, password string) *Producer {
-	cfg := &kafka.ConfigMap{"bootstrap.servers": bootstrapServers}
+	cfg := &kafka.ConfigMap{
+		"bootstrap.servers":    bootstrapServers,
+		"log.connection.close": false,
+		"enable.metrics.push":  false,
+	}
 
 	if authenticator {
 		cfg.SetKey("sasl.mechanisms", "PLAIN")
