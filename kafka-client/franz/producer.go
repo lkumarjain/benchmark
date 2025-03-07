@@ -47,8 +47,11 @@ func (p *Producer) ProduceAsync(topic string, key string, value string) {
 	p.instance.Produce(context.Background(), &kgo.Record{Topic: topic, Key: []byte(key), Value: []byte(value)}, p.DeliveryReport)
 }
 
-func (p *Producer) DeliveryReport(_ *kgo.Record, _ error) {
+func (p *Producer) DeliveryReport(_ *kgo.Record, err error) {
 	p.wg.Done()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (p *Producer) Wait() {

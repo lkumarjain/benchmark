@@ -61,15 +61,25 @@ func NewProducer(bootstrapServers string, topic string, authenticator bool, user
 }
 
 func (p *Producer) ProduceSync(key string, value string) {
-	p.syncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
+	err := p.syncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (p *Producer) ProduceAsync(key string, value string) {
 	p.wg.Add(1)
-	p.asyncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
+	err := p.asyncWriter.WriteMessages(context.Background(), kafka.Message{Key: []byte(key), Value: []byte(value)})
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (p *Producer) DeliveryReport(messages []kafka.Message, err error) {
+	if err != nil {
+		panic(err)
+	}
+
 	for _, v := range messages {
 		_ = v
 		p.wg.Done()

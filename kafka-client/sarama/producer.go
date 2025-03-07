@@ -49,7 +49,10 @@ func NewProducer(bootstrapServers string, authenticator bool, userName string, p
 }
 
 func (p *Producer) ProduceSync(topic string, key string, value string) {
-	p.syncInstance.SendMessage(&sarama.ProducerMessage{Topic: topic, Key: sarama.StringEncoder(key), Value: sarama.StringEncoder(value)})
+	_, _, err := p.syncInstance.SendMessage(&sarama.ProducerMessage{Topic: topic, Key: sarama.StringEncoder(key), Value: sarama.StringEncoder(value)})
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (p *Producer) ProduceAsync(topic string, key string, value string) {

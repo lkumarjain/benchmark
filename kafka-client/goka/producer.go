@@ -46,13 +46,17 @@ func NewProducer(bootstrapServers string, topic string, authenticator bool, user
 }
 
 func (p *Producer) ProduceSync(key string, value string) {
-	p.instance.EmitSync(key, value)
+	err := p.instance.EmitSync(key, value)
+	if err != nil {
+		log.Fatalf("error emitting message: %v", err)
+	}
 }
 
 func (p *Producer) ProduceAsync(key string, value string) {
 	p.wg.Add(1)
 	promise, err := p.instance.Emit(key, value)
 	if err != nil {
+		log.Fatalf("error emitting message: %v", err)
 		p.wg.Done()
 		return
 	}
@@ -62,6 +66,9 @@ func (p *Producer) ProduceAsync(key string, value string) {
 
 func (p *Producer) DeliveryReport(err error) {
 	defer p.wg.Done()
+	if err != nil {
+		log.Fatalf("error emitting message: %v", err)
+	}
 }
 
 func (p *Producer) Wait() {

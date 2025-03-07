@@ -40,22 +40,30 @@ func NewProducer(bootstrapServers string, authenticator bool, userName string, p
 
 func (p *Producer) ProduceSync(topic string, key string, value string) {
 	deliveryChan := make(chan kafka.Event, 1)
-	p.instance.Produce(&kafka.Message{
+	err := p.instance.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),
 		Value:          []byte(value),
 	}, deliveryChan)
+
+	if err != nil {
+		panic(err)
+	}
 
 	<-deliveryChan
 }
 
 func (p *Producer) ProduceAsync(topic string, key string, value string) {
 	p.wg.Add(1)
-	p.instance.Produce(&kafka.Message{
+	err := p.instance.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),
 		Value:          []byte(value),
 	}, nil)
+
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (p *Producer) DeliveryReport() {
