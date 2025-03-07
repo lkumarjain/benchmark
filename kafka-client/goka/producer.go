@@ -19,7 +19,7 @@ type Producer struct {
 func NewProducer(bootstrapServers string, topic string, authenticator bool, userName string, password string) *Producer {
 	brokers := strings.Split(bootstrapServers, ",")
 
-	config := goka.DefaultConfig()
+	config := sarama.NewConfig()
 	config.Version = sarama.V3_6_0_0
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Retry.Max = 10
